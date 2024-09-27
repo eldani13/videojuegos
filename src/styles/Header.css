@@ -30,7 +30,11 @@ a {
     font-size: 20px;
     color: white;
     font-family: "Mulish", sans-serif;
-    
+
+}
+
+a:hover {
+    color: #ccc;
 }
 
 
