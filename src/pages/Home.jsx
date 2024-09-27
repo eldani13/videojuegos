@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Product from "../components/Product";
 import Header from "../components/layouts/Header";
+import Footer from "../components/layouts/Footer";
 import "../styles/Home.css";
 
 function Home() {
@@ -29,6 +30,7 @@ function Home() {
           />
         ))}
       </div>
+      <Footer />
     </div>
   );
 }
