@@ -12,12 +12,12 @@ function Product({ product, onDelete }) {
   };
 
   return (
-    <div className="product">
-      <h2>{product.name}</h2>
+    <div className="productos flex flex-col gap-4 justify-center items-center">
+      <span className='text-3xl font-bold'>{product.name}</span>
       <p>{product.description}</p>
       <p>${product.price}</p>
-      {product.image && <img src={`http://localhost:5000${product.image}`} alt={product.name} />}
-      <button onClick={handleDelete}>Eliminar Producto</button>
+      {product.image && <img src={`http://localhost:5000${product.image}`} alt={product.name} width={150} />}
+      <button onClick={handleDelete} className='p-4 bg-[#f7002f] rounded-3xl'>Eliminar Producto</button>
     </div>
   );
 }

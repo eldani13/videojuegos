@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/Header.css";
 import logo from "../../img/logo.png";
+import { BiSearch } from 'react-icons/bi';
 
 const menuItems = [
   { name: "Inicio", url: "/" },
@@ -20,32 +21,36 @@ function Header() {
 
   return (
     <header className="">
-      <section className="container">
-        <h1 className="title">
-          <img src={logo} alt="Logo" />
-        </h1>
-        {/* <button 
-                    className="md:hidden p-2" 
-                    onClick={toggleMenu}
-                >
-                    {openMenu ? 'Cerrar' : 'Abrir'} Menú
-                </button> */}
-        <nav className="nav">
-          <ul className="">
-            {menuItems.map((item, index) => (
-              <li key={index}>
-                <Link
-                  to={item.url}
-                  className={` ${pathname === item.url ? "" : ""}`}
-                  onClick={() => setOpenMenu(false)}
-                >
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
+      <section className="container w-full">
+        <div className="flex flex-row justify-center items-center">
+          <h1 className="title">
+            <img src={logo} alt="Logo" width={90} />
+          </h1>
+        </div>
+        <div>
+          <input
+            type="search"
+            placeholder="Buscar..."
+            className="w-96 h-11 pl-10 pr-4 rounded-full border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
+        </div>
+        <div>
+          <nav className="nav">
+            <ul className="">
+              {menuItems.map((item, index) => (
+                <li key={index}>
+                  <Link
+                    to={item.url}
+                    className={` ${pathname === item.url ? "" : ""}`}
+                    onClick={() => setOpenMenu(false)}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
         <div className="icons">
           <a href="#">
             <svg

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Product from "../components/Product";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
+import Slider from "../components/layouts/Slider";
 import "../styles/Home.css";
 
 function Home() {
@@ -20,6 +21,7 @@ function Home() {
   return (
     <div>
       <Header />
+      <Slider />
       <h1 className="title">Bienvenido a nuestra tienda</h1>
       <div className="container grid grid-cols-3 gap-4">
         {products.map((product) => (
