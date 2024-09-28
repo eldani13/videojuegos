@@ -1,22 +1,23 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Asegúrate de importar useLocation
 import "../../styles/Header.css";
 import logo from "../../img/logo.png";
-import { BiSearch } from 'react-icons/bi';
+import CartModal from "../CartModal";
+import { BiSearch } from "react-icons/bi";
 
 const menuItems = [
   { name: "Inicio", url: "/" },
-  { name: "Productos", url: "/productos" },
+  { name: "Juegos", url: "/productos" },
   { name: "Nosotros", url: "/nosotros" },
   { name: "Contacto", url: "/contactanos" },
 ];
 
 function Header() {
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const { pathname } = useLocation();
-  const [openMenu, setOpenMenu] = useState(false);
 
-  const toggleMenu = () => {
-    setOpenMenu(!openMenu);
+  const toggleCart = () => {
+    setIsCartOpen(!isCartOpen);
   };
 
   return (
@@ -41,8 +42,7 @@ function Header() {
                 <li key={index}>
                   <Link
                     to={item.url}
-                    className={` ${pathname === item.url ? "" : ""}`}
-                    onClick={() => setOpenMenu(false)}
+                    className={` ${pathname === item.url ? "active" : ""}`}
                   >
                     {item.name}
                   </Link>
@@ -80,7 +80,7 @@ function Header() {
             </svg>
           </a>
 
-          <a href="#">
+          <a href="#" onClick={toggleCart}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
@@ -93,6 +93,7 @@ function Header() {
               />
             </svg>
           </a>
+          <CartModal isOpen={isCartOpen} onClose={toggleCart} />
         </div>
       </section>
     </header>
