@@ -3,14 +3,13 @@ import Product from "../components/Product";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import Slider from "../components/layouts/Slider";
-import "../styles/Home.css";
 
 function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch("http://localhost:5000/api/products"); 
+      const response = await fetch("http://localhost:5000/api/products");
       if (!response.ok) {
         console.error("Error fetching products:", response.statusText);
         return;
@@ -24,9 +23,12 @@ function Home() {
 
   const handleDeleteProduct = async (productId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${productId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/products/${productId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (res.ok) {
         setProducts(products.filter((product) => product._id !== productId));
@@ -42,8 +44,8 @@ function Home() {
     <div>
       <Header />
       <Slider />
-      <h1 className="title">Bienvenido a nuestra tienda</h1>
-      <div className="container grid grid-cols-3 gap-4">
+      <h1 className="title flex">JUEGOSﾠ<span className="text-[#f7002f]"> PARA TODOS</span> </h1>
+      <div className="grid grid-cols-3 gap-4">
         {products.map((product) => (
           <Product
             key={product._id}

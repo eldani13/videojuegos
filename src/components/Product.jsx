@@ -14,20 +14,31 @@ function Product({ product, onDelete }) {
   };
 
   return (
-    <div className="productos flex flex-col gap-4 justify-center items-center">
-      <span className='text-3xl font-bold'>{product.name}</span>
-      <p>{product.description}</p>
-      <p>${product.price}</p>
-      {product.image && (
-        <img
-          src={`http://localhost:5000${product.image}`}
-          alt={product.name}
-          width={150}
-        />
-      )}
-      <button onClick={handleDelete} className='p-4 bg-[#f7002f] rounded-3xl'>
-        Eliminar Producto
-      </button>
+    <div className="relative max-w-xs rounded-lg bg-[#f7002f] text-white shadow-lg transition-transform transform hover:scale-105 duration-300">
+      <img 
+        src={`http://localhost:5000${product.image}`} 
+        alt={product.name} 
+        className="h-64 w-full object-cover rounded-t-lg" 
+      />
+      
+      <div className="p-4">
+        <h5 className="mb-2 text-lg font-bold">{product.name}</h5>
+
+        <p className="mb-2 text-sm text-gray-300">{product.description}</p>
+
+        <p className="text-2xl font-semibold text-white">Desde {product.price} COP</p>
+
+        <p className="text-xs text-black mt-1">{product.category || 'Sin categoría'}</p>
+
+        <button 
+          onClick={handleDelete} 
+          className="absolute bottom-4 right-4 px-3 py-1 bg-red-600 text-sm rounded-lg hover:bg-red-700 transition-colors duration-300"
+        >
+          Eliminar
+        </button>
+      </div>
+
+
     </div>
   );
 }

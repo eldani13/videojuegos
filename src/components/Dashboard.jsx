@@ -6,6 +6,7 @@ function Dashboard() {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
+  const [category, setCategory] = useState('Todos'); 
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -18,6 +19,7 @@ function Dashboard() {
     formData.append('name', name);
     formData.append('description', description);
     formData.append('price', price);
+    formData.append('category', category); 
     formData.append('image', image);
 
     try {
@@ -34,6 +36,7 @@ function Dashboard() {
         setDescription('');
         setPrice('');
         setImage(null);
+        setCategory('');
       } else {
         setMessage(data.message || 'Error al subir el producto.');
       }
@@ -81,6 +84,25 @@ function Dashboard() {
             min="0"
             className="w-full border border-gray-300 p-2 rounded"
           />
+        </div>
+
+
+        <div>
+          <label className="block font-semibold">Categoría:</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full border border-gray-300 p-2 rounded"
+          >
+            <option value="Todos">Todos</option>
+            <option value="Acción">Acción</option>
+            <option value="Lucha">Lucha</option>
+            <option value="Aventura">Aventura</option>
+            <option value="Arcade">Arcade</option>
+            <option value="Deportes">Deportes</option>
+            <option value="Estrategia">Estrategia</option>
+            <option value="Simulación">Simulación</option>
+          </select>
         </div>
 
         <div>
