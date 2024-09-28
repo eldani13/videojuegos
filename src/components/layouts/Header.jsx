@@ -3,13 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../img/logo.png";
 import CartModal from "../CartModal";
 import { BiSearch } from "react-icons/bi";
-import { BsInstagram, BsFacebook, BsCart } from "react-icons/bs"; // Importación de íconos
+import { BsInstagram, BsFacebook, BsCart } from "react-icons/bs";
 
 const menuItems = [
   { name: "Inicio", url: "/" },
-  { name: "Juegos", url: "/productos" },
+  { name: "Juegos", url: "/Games" },
   { name: "Nosotros", url: "/About" },
-  { name: "Contacto", url: "/contactanos" },
+  { name: "Contacto", url: "/Contact" },
 ];
 
 function Header() {

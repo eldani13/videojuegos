@@ -9,13 +9,33 @@ function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data));
+    const fetchProducts = async () => {
+      const response = await fetch("http://localhost:5000/api/products"); 
+      if (!response.ok) {
+        console.error("Error fetching products:", response.statusText);
+        return;
+      }
+      const data = await response.json();
+      setProducts(data);
+    };
+
+    fetchProducts();
   }, []);
 
-  const handleDeleteProduct = (productId) => {
-    setProducts(products.filter((product) => product._id !== productId));
+  const handleDeleteProduct = async (productId) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/products/${productId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setProducts(products.filter((product) => product._id !== productId));
+      } else {
+        console.error("Error deleting product:", await res.json());
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   return (
