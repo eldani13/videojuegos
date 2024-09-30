@@ -27,7 +27,7 @@ function Header() {
 
   return (
     <header className="bg-[#f7002f] shadow-lg">
-      <section className="container mx-auto p-4 flex items-center justify-between">
+      <section className="mx-auto p-4 flex items-center justify-between">
         <div className="md:hidden">
           <button
             onClick={toggleMenu}

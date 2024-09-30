@@ -24,7 +24,7 @@ function About() {
       </section>
 
       <section className="py-12 md:py-16 bg-white animate-fade-in-on-scroll">
-        <div className="container mx-auto text-center px-4">
+        <div className="mx-auto text-center px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">Nuestra Misión</h2>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
             Nos esforzamos por ofrecer una amplia selección de videojuegos para todas las edades y gustos. Nuestro compromiso es con la calidad, la innovación y la satisfacción del cliente.
@@ -33,7 +33,7 @@ function About() {
       </section>
 
       <section id="team" className="py-12 md:py-16 bg-gray-50 animate-fade-in-on-scroll">
-        <div className="container mx-auto px-4">
+        <div className="mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">Conoce a Nuestro Equipo</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <div className="bg-white p-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300">

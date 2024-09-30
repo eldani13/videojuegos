@@ -4,8 +4,11 @@ import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import Slider from "../components/layouts/Slider";
 
+import "../styles/home.css";
+
 function Home() {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -20,6 +23,11 @@ function Home() {
 
     fetchProducts();
   }, []);
+
+  const handleAddToCart = (product) => {
+    setCart([...cart, product]); // Agregar el producto al carrito
+    // Aquí podrías añadir lógica adicional, como guardar en localStorage
+  };
 
   const handleDeleteProduct = async (productId) => {
     try {
@@ -44,13 +52,18 @@ function Home() {
     <div>
       <Header />
       <Slider />
-      <h1 className="title flex">JUEGOSﾠ<span className="text-[#f7002f]"> PARA TODOS</span> </h1>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="h-36">
+        <h1 className="title flex justify-center text-4xl font-semibold p-6">
+          JUEGOSﾠ<span className="text-[#f7002f]"> PARA TODOS</span>{" "}
+        </h1>
+      </div>
+      <div className="grid grid-cols-5">
         {products.map((product) => (
           <Product
             key={product._id}
             product={product}
             onDelete={handleDeleteProduct}
+            onAddToCart={handleAddToCart} // Pasar la función al componente de producto
           />
         ))}
       </div>

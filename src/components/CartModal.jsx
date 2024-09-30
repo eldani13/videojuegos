@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/CartModal.css';
 
-function CartModal({ isOpen, onClose }) {
+function CartModal({ isOpen, onClose, cart }) {
   if (!isOpen) return null;
 
   const handleOverlayClick = (e) => {
@@ -23,7 +23,22 @@ function CartModal({ isOpen, onClose }) {
           X
         </button>
         <h2 className="text-lg font-semibold mt-4">Carrito de Compras</h2>
-        <p className="mt-2">Tu carrito está vacío.</p>
+        
+        {cart && cart.products.length > 0 ? (
+          <div>
+            <ul className="mt-2">
+              {cart.products.map((product) => (
+                <li key={product._id} className="flex justify-between">
+                  <span>{product.name}</span>
+                  <span>{product.price} COP</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 font-semibold">Total: {cart.totalPrice} COP</p>
+          </div>
+        ) : (
+          <p className="mt-2">Tu carrito está vacío.</p>
+        )}
       </div>
     </div>
   );
