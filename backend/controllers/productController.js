@@ -1,19 +1,25 @@
 const Product = require('../models/Product');
 
 const addProduct = async (req, res) => {
-  const { name, description, price, category } = req.body; 
+  const { name, description, price, oldPrice, discount, category } = req.body; 
   const image = req.file ? `/uploads/${req.file.filename}` : '';
 
   const newProduct = new Product({
     name,
     description,
     price,
+    oldPrice,   
+    discount,   
     category, 
     image,
   });
 
-  await newProduct.save();
-  res.json(newProduct);
+  try {
+    await newProduct.save();
+    res.status(201).json(newProduct); 
+  } catch (error) {
+    res.status(500).json({ message: 'Error al agregar el producto.' });
+  }
 };
 
 const getAllProducts = async (req, res) => {
@@ -27,7 +33,7 @@ const getAllProducts = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, category } = req.body;  
+  const { name, description, price, oldPrice, discount, category } = req.body;  
   const image = req.file ? `/uploads/${req.file.filename}` : '';
 
   try {
@@ -35,6 +41,8 @@ const updateProduct = async (req, res) => {
       name,
       description,
       price,
+      oldPrice,  
+      discount,   
       category,  
       image,
     }, { new: true });

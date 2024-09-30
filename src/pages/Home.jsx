@@ -3,6 +3,7 @@ import Product from "../components/Product";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import Slider from "../components/layouts/Slider";
+import Buy from "../components/Buy";
 
 import "../styles/home.css";
 
@@ -25,8 +26,7 @@ function Home() {
   }, []);
 
   const handleAddToCart = (product) => {
-    setCart([...cart, product]); // Agregar el producto al carrito
-    // Aquí podrías añadir lógica adicional, como guardar en localStorage
+    setCart([...cart, product]);
   };
 
   const handleDeleteProduct = async (productId) => {
@@ -52,21 +52,25 @@ function Home() {
     <div>
       <Header />
       <Slider />
+      <Buy />
+
       <div className="h-36">
-        <h1 className="title flex justify-center text-4xl font-semibold p-6">
-          JUEGOSﾠ<span className="text-[#f7002f]"> PARA TODOS</span>{" "}
+        <h1 className="title flex justify-center text-2xl md:text-4xl font-semibold p-6 text-center">
+          JUEGOSﾠ<span className="text-[#f7002f]"> PARA TODOS</span>
         </h1>
       </div>
-      <div className="grid grid-cols-5">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
         {products.map((product) => (
           <Product
             key={product._id}
             product={product}
             onDelete={handleDeleteProduct}
-            onAddToCart={handleAddToCart} // Pasar la función al componente de producto
+            onAddToCart={handleAddToCart}
           />
         ))}
       </div>
+
       <Footer />
     </div>
   );
