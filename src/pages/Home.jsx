@@ -60,7 +60,9 @@ function Home() {
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+      <div className="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] px-5" style={{
+        columnGap: '70px',
+      }}>
         {products.map((product) => (
           <Product
             key={product._id}

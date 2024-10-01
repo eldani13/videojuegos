@@ -1,7 +1,15 @@
 import React from 'react';
 import '../styles/CartModal.css';
+import { setCookie, getCookie } from '../utils/cookieUtils';
 
-function CartModal({ isOpen, onClose, cart }) {
+const getCartFromCookies = () => {
+  const cart = JSON.parse(getCookie("cart") || '{"products": []}');
+  return cart;
+};
+
+function CartModal({ isOpen, onClose }) {
+
+  const cart = getCartFromCookies(); 
   if (!isOpen) return null;
 
   const handleOverlayClick = (e) => {
@@ -24,7 +32,7 @@ function CartModal({ isOpen, onClose, cart }) {
         </button>
         <h2 className="text-lg font-semibold mt-4">Carrito de Compras</h2>
         
-        {cart && cart.products.length > 0 ? (
+        {cart.products && cart.products.length > 0 ? (
           <div>
             <ul className="mt-2">
               {cart.products.map((product) => (
@@ -34,7 +42,7 @@ function CartModal({ isOpen, onClose, cart }) {
                 </li>
               ))}
             </ul>
-            <p className="mt-2 font-semibold">Total: {cart.totalPrice} COP</p>
+            <p className="mt-2 font-semibold">Total: {cart.products.reduce((acc, product) => acc + product.price * product.quantity, 0)} COP</p>
           </div>
         ) : (
           <p className="mt-2">Tu carrito está vacío.</p>

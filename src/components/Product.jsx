@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { setCookie, getCookie } from '../utils/cookieUtils';
 
 function Product({ product, onDelete, onAddToCart, isDashboard }) {
   const [loading, setLoading] = useState(false);
@@ -7,7 +8,7 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
   const handleAddToCart = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/cart`, {
+      const res = await fetch(`http://localhost:5000/api/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,6 +30,26 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
       setLoading(false);
     }
   };
+
+  // const addToCart = (product) => {
+  //   let cart = JSON.parse(getCookie("cart") || "[]");
+  
+  //   const existingProduct = cart.find(item => item._id === product._id);
+  //   if (existingProduct) {
+  //     existingProduct.quantity += 1; 
+  //   } else {
+  //     cart.push({ ...product, quantity: 1 });  
+  //   }
+  
+  //   setCookie("cart", JSON.stringify(cart), 1);
+  //   console.log("Producto añadido al carrito", cart);
+  // };
+  
+  // const Buy = ({ product }) => {
+  //   const handleBuyClick = () => {
+  //     addToCart(product); 
+  //     alert("Producto añadido al carrito");
+  //   };
 
   return (
     <div className="relative flex flex-col items-center rounded-lg bg-white shadow-lg transition-transform transform hover:scale-105 duration-300 w-80 mx-auto mb-10">
