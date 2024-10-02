@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import Loading from '../components/Loading'; 
+import React, { useState, useEffect } from "react";
+import Loading from "../components/Loading";
 
 function Dashboard() {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [oldPrice, setOldPrice] = useState('');
-  const [discount, setDiscount] = useState(''); 
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [oldPrice, setOldPrice] = useState("");
+  const [discount, setDiscount] = useState("");
   const [image, setImage] = useState(null);
-  const [category, setCategory] = useState('Todos'); 
-  const [message, setMessage] = useState('');
+  const [category, setCategory] = useState("Todos");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]); 
-  const [fetchLoading, setFetchLoading] = useState(true); 
+  const [products, setProducts] = useState([]);
+  const [fetchLoading, setFetchLoading] = useState(true);
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/products');
+      const res = await fetch("http://localhost:5000/api/products");
       const data = await res.json();
-      setProducts(data);
+      if (data.ok) {
+        setProducts(data);
+      }
     } catch (error) {
-      setMessage('Error al cargar los productos: ' + error.message);
+      setMessage("Error al cargar los productos: " + error.message);
     } finally {
       setFetchLoading(false);
     }
@@ -32,40 +34,40 @@ function Dashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
+    setMessage("");
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('price', price);
-    formData.append('oldPrice', oldPrice); 
-    formData.append('discount', discount);
-    formData.append('category', category); 
-    formData.append('image', image);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("oldPrice", oldPrice);
+    formData.append("discount", discount);
+    formData.append("category", category);
+    formData.append("image", image);
 
     try {
-      const res = await fetch('http://localhost:5000/api/products', {
-        method: 'POST',
+      const res = await fetch("http://localhost:5000/api/products", {
+        method: "POST",
         body: formData,
       });
 
       const data = await res.json();
-      
+
       if (res.ok) {
-        setMessage('Producto subido exitosamente!');
-        setName('');
-        setDescription('');
-        setPrice('');
-        setOldPrice(''); 
-        setDiscount('');
+        setMessage("Producto subido exitosamente!");
+        setName("");
+        setDescription("");
+        setPrice("");
+        setOldPrice("");
+        setDiscount("");
         setImage(null);
-        setCategory('Todos'); 
-        fetchProducts(); 
+        setCategory("Todos");
+        fetchProducts();
       } else {
-        setMessage(data.message || 'Error al subir el producto.');
+        setMessage(data.message || "Error al subir el producto.");
       }
     } catch (error) {
-      setMessage('Error en la conexión: ' + error.message);
+      setMessage("Error en la conexión: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -74,14 +76,16 @@ function Dashboard() {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
       <h1 className="text-2xl font-bold mb-4 text-center">Dashboard</h1>
-      
+
       {/* Formulario para agregar productos */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-red-500 font-semibold">Nombre del Producto:</label>
+          <label className="block text-red-500 font-semibold">
+            Nombre del Producto:
+          </label>
           <input
             type="text"
-            placeholder='Nombre del producto'
+            placeholder="Nombre del producto"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -174,12 +178,16 @@ function Dashboard() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 rounded ${loading ? 'bg-gray-400' : 'bg-red-500 hover:bg-red-600'} text-white font-bold flex justify-center items-center`}
+          className={`w-full py-2 rounded ${
+            loading ? "bg-gray-400" : "bg-red-500 hover:bg-red-600"
+          } text-white font-bold flex justify-center items-center`}
         >
-          {loading ? <Loading /> : 'Subir Producto'}
+          {loading ? <Loading /> : "Subir Producto"}
         </button>
 
-        {message && <p className="mt-2 text-center text-green-600">{message}</p>}
+        {message && (
+          <p className="mt-2 text-center text-green-600">{message}</p>
+        )}
       </form>
 
       <h2 className="text-xl font-bold mt-8">Productos</h2>
@@ -188,13 +196,22 @@ function Dashboard() {
       ) : (
         <ul className="space-y-4 mt-4">
           {products.map((product) => (
-            <li key={product._id} className="p-4 border border-gray-200 rounded">
+            <li
+              key={product._id}
+              className="p-4 border border-gray-200 rounded"
+            >
               <h3 className="font-semibold">{product.name}</h3>
               <p>{product.description}</p>
               <p>Precio: ${product.price}</p>
               {product.oldPrice && <p>Precio Anterior: ${product.oldPrice}</p>}
               {product.discount && <p>Descuento: {product.discount}%</p>}
-              {product.image && <img src={product.image} alt={product.name} className="w-full h-auto rounded mt-2" />}
+              {product.image && (
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-auto rounded mt-2"
+                />
+              )}
             </li>
           ))}
         </ul>
