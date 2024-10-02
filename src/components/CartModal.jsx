@@ -11,7 +11,7 @@ const getCartFromCookies = () => {
 
 function CartModal({ isOpen, onClose }) {
   // const cart = getCartFromCookies();
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(null);
   const cartUtils = new CartUtils();
 
   useEffect(() => {
@@ -44,20 +44,21 @@ function CartModal({ isOpen, onClose }) {
         </button>
         <h2 className="text-lg font-semibold mt-4">Carrito de Compras</h2>
 
-        {/* {cart && cart && cart.length > 0 ? (
+        {cart && cart.products && cart.products.length > 0 ? (
           <div>
             <ul className="mt-2">
-              {cart.map((product) => (
+              {cart.products.map((product) => (
                 <li key={product._id} className="flex justify-between">
                   <span>{product.name}</span>
                   <span>{product.price} COP</span>
+                  <span> (x{product.quantity})</span>
                 </li>
               ))}
             </ul>
             <p className="mt-2 font-semibold">
               Total:{" "}
-              {cart.reduce(
-                (acc, product) => acc + product.price,
+              {cart.products.reduce(
+                (acc, product) => acc + product.price * product.quantity,
                 // (acc, product) => acc + product.price * product.quantity,
                 0
               )}{" "}
@@ -66,7 +67,7 @@ function CartModal({ isOpen, onClose }) {
           </div>
         ) : (
           <p className="mt-2">Tu carrito está vacío.</p>
-        )} */}
+        )}
       </div>
     </div>
   );

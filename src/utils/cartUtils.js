@@ -11,7 +11,7 @@ class CartUtils {
     if (existProductInCart !== -1) {
       cartDetails.products[existProductInCart].quantity += 1;
     } else {
-      cartDetails.products.push({ ...newProduct, quantity: 0 });
+      cartDetails.products.push({ ...newProduct, quantity: 1 });
     }
 
     Cookies.set("shopping_cart", JSON.stringify(cartDetails));
