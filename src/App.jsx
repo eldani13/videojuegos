@@ -8,6 +8,7 @@ import Login from './auth/login';
 import Contact from './pages/Contact';
 import Games from './pages/Games';
 import Preview from './pages/Preview';
+import SearchResults from './pages/SearchResults';
 
 
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/Preview/:productId" element={<Preview />} />
+        <Route path="/Search" element={<SearchResults />} />
       </Routes>
     </Router>
   );

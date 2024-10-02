@@ -2,36 +2,21 @@ import React, { useState } from "react";
 import { setCookie, getCookie } from "../utils/cookieUtils";
 import Preview from "../pages/Preview";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 function Product({ product, onDelete, onAddToCart, isDashboard }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleAddToCart = async () => {
     setLoading(true);
     try {
-      // ADDMER COMMENT:
-      // const res = await fetch(`http://localhost:5000/api/products`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ productId: product._id }),
-      // });
-
-      // if (res.ok) {
-      //   const data = await res.json();
-      //   setMessage("Producto agregado al carrito con éxito");
-      //   onAddToCart(data.cart);
-      // } else {
-      //   const error = await res.json();
-      //   setMessage(`Error: ${error.message}`);
-      // }
-
-      // ADDMER ADDED:
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       onAddToCart(product);
-
+      setMessage("Juego añadido al carrito");
+      setModalOpen(true);
     } catch (error) {
       setMessage("Error al añadir al carrito.");
     } finally {
@@ -43,25 +28,9 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
     navigate(`/preview/${product._id}`);
   };
 
-  // const addToCart = (product) => {
-  //   let cart = JSON.parse(getCookie("cart") || "[]");
-
-  //   const existingProduct = cart.find(item => item._id === product._id);
-  //   if (existingProduct) {
-  //     existingProduct.quantity += 1;
-  //   } else {
-  //     cart.push({ ...product, quantity: 1 });
-  //   }
-
-  //   setCookie("cart", JSON.stringify(cart), 1);
-  //   console.log("Producto añadido al carrito", cart);
-  // };
-
-  // const Buy = ({ product }) => {
-  //   const handleBuyClick = () => {
-  //     addToCart(product);
-  //     alert("Producto añadido al carrito");
-  //   };
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="relative flex flex-col items-center rounded-lg bg-white shadow-lg transition-transform transform hover:scale-105 duration-300 w-80 mx-auto mb-10">
@@ -102,33 +71,11 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
         {!isDashboard && (
           <div className="p-4 w-full">
             {loading ? (
-              <div className="flex justify-center items-center">
-                <svg
-                  className="animate-spin h-5 w-5 text-green-500"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8z"
-                  ></path>
-                </svg>
-                <p className="ml-2">Cargando...</p>
-              </div>
+              <Loading message="Cargando..." />
             ) : (
               <button
                 onClick={handleAddToCart}
-                className="w-full py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors duration-300"
+                className="w-full py-2 bg-[#f7002f] text-white font-semibold rounded-lg hover:bg-[#f04968] transition-colors duration-300"
               >
                 Comprar
               </button>
@@ -138,22 +85,26 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
 
         <div className="p-4 w-full">
           <button
-            className="w-full py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors duration-300"
-            onClick={handleViewProduct} 
+            className="w-full py-2 bg-black text-white font-semibold rounded-lg hover:bg-[#494848] transition-colors duration-300"
+            onClick={handleViewProduct}
           >
             Ver
           </button>
         </div>
       </div>
 
-      {message && (
-        <p
-          className={`text-center mt-2 text-sm ${
-            message.startsWith("Error") ? "text-red-600" : "text-green-600"
-          }`}
-        >
-          {message}
-        </p>
+      {modalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-6 shadow-lg text-center">
+            <h2 className="text-xl font-semibold mb-2">{message}</h2>
+            <button
+              onClick={handleCloseModal}
+              className="py-2 px-4 bg-[#f7002f] text-white rounded-lg hover:bg-[#f04968] transition-colors duration-300"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
