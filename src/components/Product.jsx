@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { setCookie, getCookie } from "../utils/cookieUtils";
+import Preview from "../pages/Preview";
+import { useNavigate } from "react-router-dom";
 
 function Product({ product, onDelete, onAddToCart, isDashboard }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleAddToCart = async () => {
     setLoading(true);
@@ -34,6 +37,10 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleViewProduct = () => {
+    navigate(`/preview/${product._id}`);
   };
 
   // const addToCart = (product) => {
@@ -132,11 +139,8 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
         <div className="p-4 w-full">
           <button
             className="w-full py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors duration-300"
-            onClick={() => window.alert(`Ver producto: ${product.name}`)}
+            onClick={handleViewProduct} 
           >
-            <span role="img" aria-label="eye">
-              👁️
-            </span>{" "}
             Ver
           </button>
         </div>

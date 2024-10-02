@@ -43,13 +43,25 @@ function CartModal({ isOpen, onClose }) {
           X
         </button>
         <h2 className="text-lg font-semibold mt-4">Carrito de Compras</h2>
+        <div className="flex items-center justify-between">
+
+        <span className="font-bold">Juego</span>
+        <span className="font-bold">Nombre</span>
+        <span className="font-bold">Precio</span>
+        <span className="font-bold">Cantidad</span>
+        </div>
 
         {cart && cart.products && cart.products.length > 0 ? (
-          <div>
+          <div className="">
             <ul className="mt-2">
               {cart.products.map((product) => (
                 <li key={product._id} className="flex justify-between">
-                  <span>{product.name}</span>
+                   <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-24 h-24 object-cover mb-2"
+                  />
+                  <span className="">{product.name}</span>
                   <span>{product.price} COP</span>
                   <span> (x{product.quantity})</span>
                 </li>

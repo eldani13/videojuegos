@@ -7,6 +7,7 @@ import About from './pages/About';
 import Login from './auth/login';
 import Contact from './pages/Contact';
 import Games from './pages/Games';
+import Preview from './pages/Preview';
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/Preview/:productId" element={<Preview />} />
       </Routes>
     </Router>
   );
