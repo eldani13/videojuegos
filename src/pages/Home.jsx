@@ -4,13 +4,14 @@ import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import Slider from "../components/layouts/Slider";
 import Buy from "../components/Buy";
-import Cookies from 'js-cookie';
+import { CartUtils } from "../utils/cartUtils";
 
 import "../styles/home.css";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const cartUtils = new CartUtils();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -27,11 +28,7 @@ function Home() {
   }, []);
 
   const handleAddToCart = (product) => {
-    setCart((prev) => {
-      const newCart = [...prev, product];
-      Cookies.set("shopping_cart", JSON.stringify(newCart));
-      return newCart;
-    });
+    setCart(cartUtils.appendProductInCart(product));
   };
 
   const handleDeleteProduct = async (productId) => {

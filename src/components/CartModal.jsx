@@ -2,6 +2,7 @@ import "../styles/CartModal.css";
 import { setCookie, getCookie } from "../utils/cookieUtils";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { CartUtils } from "../utils/cartUtils";
 
 const getCartFromCookies = () => {
   const cart = JSON.parse(getCookie("cart") || '{"products": []}');
@@ -11,11 +12,14 @@ const getCartFromCookies = () => {
 function CartModal({ isOpen, onClose }) {
   // const cart = getCartFromCookies();
   const [cart, setCart] = useState([]);
+  const cartUtils = new CartUtils();
+
   useEffect(() => {
     if (!isOpen) return;
-    const currentCart = Cookies.get("shopping_cart");
-    setCart(currentCart ? JSON.parse(currentCart) : []);
-    console.log(currentCart ? JSON.parse(currentCart) : []);
+
+    const gett = cartUtils.getProductsInCartByCart();
+    console.log(gett);
+    setCart(gett);
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -40,7 +44,7 @@ function CartModal({ isOpen, onClose }) {
         </button>
         <h2 className="text-lg font-semibold mt-4">Carrito de Compras</h2>
 
-        {cart && cart && cart.length > 0 ? (
+        {/* {cart && cart && cart.length > 0 ? (
           <div>
             <ul className="mt-2">
               {cart.map((product) => (
@@ -62,7 +66,7 @@ function CartModal({ isOpen, onClose }) {
           </div>
         ) : (
           <p className="mt-2">Tu carrito está vacío.</p>
-        )}
+        )} */}
       </div>
     </div>
   );
