@@ -4,6 +4,7 @@ import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import Slider from "../components/layouts/Slider";
 import Buy from "../components/Buy";
+import Cookies from 'js-cookie';
 
 import "../styles/home.css";
 
@@ -26,7 +27,11 @@ function Home() {
   }, []);
 
   const handleAddToCart = (product) => {
-    setCart([...cart, product]);
+    setCart((prev) => {
+      const newCart = [...prev, product];
+      Cookies.set("shopping_cart", JSON.stringify(newCart));
+      return newCart;
+    });
   };
 
   const handleDeleteProduct = async (productId) => {
@@ -60,9 +65,12 @@ function Home() {
         </h1>
       </div>
 
-      <div className="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] px-5" style={{
-        columnGap: '70px',
-      }}>
+      <div
+        className="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] px-5"
+        style={{
+          columnGap: "70px",
+        }}
+      >
         {products.map((product) => (
           <Product
             key={product._id}

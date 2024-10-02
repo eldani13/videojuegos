@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setCookie, getCookie } from '../utils/cookieUtils';
+import { setCookie, getCookie } from "../utils/cookieUtils";
 
 function Product({ product, onDelete, onAddToCart, isDashboard }) {
   const [loading, setLoading] = useState(false);
@@ -8,22 +8,27 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
   const handleAddToCart = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/products`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ productId: product._id }),
-      });
+      // ADDMER COMMENT:
+      // const res = await fetch(`http://localhost:5000/api/products`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ productId: product._id }),
+      // });
 
-      if (res.ok) {
-        const data = await res.json();
-        setMessage("Producto agregado al carrito con éxito");
-        onAddToCart(data.cart);
-      } else {
-        const error = await res.json();
-        setMessage(`Error: ${error.message}`);
-      }
+      // if (res.ok) {
+      //   const data = await res.json();
+      //   setMessage("Producto agregado al carrito con éxito");
+      //   onAddToCart(data.cart);
+      // } else {
+      //   const error = await res.json();
+      //   setMessage(`Error: ${error.message}`);
+      // }
+
+      // ADDMER ADDED:
+      onAddToCart(product);
+
     } catch (error) {
       setMessage("Error al añadir al carrito.");
     } finally {
@@ -33,21 +38,21 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
 
   // const addToCart = (product) => {
   //   let cart = JSON.parse(getCookie("cart") || "[]");
-  
+
   //   const existingProduct = cart.find(item => item._id === product._id);
   //   if (existingProduct) {
-  //     existingProduct.quantity += 1; 
+  //     existingProduct.quantity += 1;
   //   } else {
-  //     cart.push({ ...product, quantity: 1 });  
+  //     cart.push({ ...product, quantity: 1 });
   //   }
-  
+
   //   setCookie("cart", JSON.stringify(cart), 1);
   //   console.log("Producto añadido al carrito", cart);
   // };
-  
+
   // const Buy = ({ product }) => {
   //   const handleBuyClick = () => {
-  //     addToCart(product); 
+  //     addToCart(product);
   //     alert("Producto añadido al carrito");
   //   };
 
@@ -64,15 +69,23 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
         className="h-64 w-full object-cover rounded-t-lg"
       />
       <div className="p-4 text-center">
-        <h5 className="text-lg font-semibold text-gray-900 uppercase">{product.name}</h5>
+        <h5 className="text-lg font-semibold text-gray-900 uppercase">
+          {product.name}
+        </h5>
         <p className="text-sm text-gray-600">{product.category}</p>
         <div className="my-2">
           {product.oldPrice && (
-            <p className="text-gray-500 text-sm line-through">{product.oldPrice} COP</p>
+            <p className="text-gray-500 text-sm line-through">
+              {product.oldPrice} COP
+            </p>
           )}
-          <p className="text-xl font-bold text-green-600">{product.price} COP</p>
+          <p className="text-xl font-bold text-green-600">
+            {product.price} COP
+          </p>
           {product.discount && (
-            <p className="text-sm text-red-600 font-semibold">Oferta disponible</p>
+            <p className="text-sm text-red-600 font-semibold">
+              Oferta disponible
+            </p>
           )}
         </div>
         <p className="text-xs text-gray-500 mt-2">{product.description}</p>
