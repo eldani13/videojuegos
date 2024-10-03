@@ -10,7 +10,6 @@ const getCartFromCookies = () => {
 };
 
 function CartModal({ isOpen, onClose }) {
-  // const cart = getCartFromCookies();
   const [cart, setCart] = useState(null);
   const cartUtils = new CartUtils();
 
@@ -18,7 +17,6 @@ function CartModal({ isOpen, onClose }) {
     if (!isOpen) return;
 
     const gett = cartUtils.getProductsInCartByCart();
-    console.log(gett);
     setCart(gett);
   }, [isOpen]);
 
@@ -35,50 +33,59 @@ function CartModal({ isOpen, onClose }) {
       className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center w-full h-full"
       onClick={handleOverlayClick}
     >
-      <div className="modal-content bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+      <div className="modal-content bg-white rounded-lg shadow-2xl max-w-lg w-full p-6 relative">
         <button
-          className="close-button text-gray-500 hover:text-gray-800 focus:outline-none"
+          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl font-bold focus:outline-none"
           onClick={onClose}
         >
-          X
+          &times;
         </button>
-        <h2 className="text-lg font-semibold mt-4">Carrito de Compras</h2>
-        <div className="flex items-center justify-between">
-
-        <span className="font-bold">Juego</span>
-        <span className="font-bold">Nombre</span>
-        <span className="font-bold">Precio</span>
-        <span className="font-bold">Cantidad</span>
-        </div>
-
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Carrito de Compras</h2>
+        
         {cart && cart.products && cart.products.length > 0 ? (
-          <div className="">
-            <ul className="mt-2">
+          <>
+            <ul className="space-y-4">
               {cart.products.map((product) => (
-                <li key={product._id} className="flex justify-between">
-                   <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-24 h-24 object-cover mb-2"
-                  />
-                  <span className="">{product.name}</span>
-                  <span>{product.price} COP</span>
-                  <span> (x{product.quantity})</span>
+                <li
+                  key={product._id}
+                  className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow-sm"
+                >
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={`http://localhost:5000${product.image}`}
+                      alt={product.name}
+                      className="w-20 h-20 object-cover rounded-lg"
+                    />
+                    <div>
+                      <p className="text-lg font-semibold">{product.name}</p>
+                      <p className="text-gray-500">
+                        {product.quantity} x {product.price} COP
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold">
+                    {product.price * product.quantity} COP
+                  </span>
                 </li>
               ))}
             </ul>
-            <p className="mt-2 font-semibold">
-              Total:{" "}
-              {cart.products.reduce(
-                (acc, product) => acc + product.price * product.quantity,
-                // (acc, product) => acc + product.price * product.quantity,
-                0
-              )}{" "}
-              COP
-            </p>
-          </div>
+
+            <div className="mt-6">
+              <p className="text-xl font-semibold text-gray-800">
+                Total:{" "}
+                {cart.products.reduce(
+                  (acc, product) => acc + product.price * product.quantity,
+                  0
+                )}{" "}
+                COP
+              </p>
+              <button className="w-full mt-4 bg-green-500 hover:bg-green-600 text-white text-lg font-semibold py-3 rounded-lg shadow-md transition-all">
+                Proceder al pago
+              </button>
+            </div>
+          </>
         ) : (
-          <p className="mt-2">Tu carrito está vacío.</p>
+          <p className="mt-4 text-gray-500 text-center">Tu carrito está vacío.</p>
         )}
       </div>
     </div>
