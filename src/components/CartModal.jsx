@@ -33,14 +33,16 @@ function CartModal({ isOpen, onClose }) {
       className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center w-full h-full"
       onClick={handleOverlayClick}
     >
-      <div className="modal-content bg-white rounded-lg shadow-2xl max-w-lg w-full p-6 relative">
+      <div className="modal-content bg-white rounded-lg shadow-2xl max-w-lg w-full p-6 relative" style={{
+        boxShadow: '1px 1px 20px black'
+      }}>
         <button
           className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl font-bold focus:outline-none"
           onClick={onClose}
         >
           &times;
         </button>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Carrito de Compras</h2>
+        <h2 className="text-2xl font-bold text-black text-center mb-4">Carrito de Compras</h2>
         
         {cart && cart.products && cart.products.length > 0 ? (
           <>
@@ -79,7 +81,7 @@ function CartModal({ isOpen, onClose }) {
                 )}{" "}
                 COP
               </p>
-              <button className="w-full mt-4 bg-green-500 hover:bg-green-600 text-white text-lg font-semibold py-3 rounded-lg shadow-md transition-all">
+              <button className="w-full mt-4 bg-[#f7002f] hover:bg-[#f04968]  text-white text-lg font-semibold py-3 rounded-lg shadow-md transition-all">
                 Proceder al pago
               </button>
             </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import Loading from "../components/Loading";
 
 function Dashboard() {
@@ -13,12 +14,21 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [fetchLoading, setFetchLoading] = useState(true);
+  const navigate = useNavigate(); 
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login"); 
+  };
+
   const fetchProducts = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/products");
       const data = await res.json();
-      if (data.ok) {
+      if (res.ok) {
         setProducts(data);
+      } else {
+        setMessage("Error al cargar los productos: " + data.message);
       }
     } catch (error) {
       setMessage("Error al cargar los productos: " + error.message);
@@ -28,8 +38,13 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login"); 
+    } else {
+      fetchProducts();
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,7 +92,15 @@ function Dashboard() {
     <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
       <h1 className="text-2xl font-bold mb-4 text-center">Dashboard</h1>
 
-      {/* Formulario para agregar productos */}
+      <div className="text-right">
+        <button
+          onClick={handleLogout}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        >
+          Cerrar Sesión
+        </button>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-red-500 font-semibold">
@@ -189,33 +212,6 @@ function Dashboard() {
           <p className="mt-2 text-center text-green-600">{message}</p>
         )}
       </form>
-
-      <h2 className="text-xl font-bold mt-8">Productos</h2>
-      {fetchLoading ? (
-        <Loading />
-      ) : (
-        <ul className="space-y-4 mt-4">
-          {products.map((product) => (
-            <li
-              key={product._id}
-              className="p-4 border border-gray-200 rounded"
-            >
-              <h3 className="font-semibold">{product.name}</h3>
-              <p>{product.description}</p>
-              <p>Precio: ${product.price}</p>
-              {product.oldPrice && <p>Precio Anterior: ${product.oldPrice}</p>}
-              {product.discount && <p>Descuento: {product.discount}%</p>}
-              {product.image && (
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-auto rounded mt-2"
-                />
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { setCookie, getCookie } from "../utils/cookieUtils";
-import Preview from "../pages/Preview";
+// import Preview from "../pages/Preview";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 
@@ -55,7 +55,7 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
               {product.oldPrice} COP
             </p>
           )}
-          <p className="text-xl font-bold text-green-600">
+          <p className="text-xl font-bold text-[#f7002f]">
             {product.price} COP
           </p>
           {product.discount && (
@@ -75,7 +75,7 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
             ) : (
               <button
                 onClick={handleAddToCart}
-                className="w-full py-2 bg-[#f7002f] text-white font-semibold rounded-lg hover:bg-[#f04968] transition-colors duration-300"
+                className="w-full py-2 bg-[#f7002f] text-white font-semibold rounded-lg hover:bg-[#f04968] transition-colors duration-300 uppercase text-xs"
               >
                 Comprar
               </button>
@@ -85,9 +85,39 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
 
         <div className="p-4 w-full">
           <button
-            className="w-full py-2 bg-black text-white font-semibold rounded-lg hover:bg-[#494848] transition-colors duration-300"
+            className="w-full py-2 bg-black text-white font-semibold rounded-lg hover:bg-[#494848] transition-colors duration-300 uppercase text-xs flex justify-center items-center gap-2"
             onClick={handleViewProduct}
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 48 48"
+            >
+              <path
+                fill="none"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M43.5 24a22.505 22.505 0 0 0-39 0"
+              />
+              <circle
+                cx="24"
+                cy="24"
+                r="7.889"
+                fill="none"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                fill="none"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4.5 24a22.505 22.505 0 0 0 39 0"
+              />
+            </svg>
             Ver
           </button>
         </div>

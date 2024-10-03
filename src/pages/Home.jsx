@@ -4,7 +4,9 @@ import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import Slider from "../components/layouts/Slider";
 import Buy from "../components/Buy";
+import Client from "../components/layouts/Client";
 import { CartUtils } from "../utils/cartUtils";
+import Loading from "../components/Loading";
 
 import "../styles/home.css";
 
@@ -77,7 +79,7 @@ function Home() {
           />
         ))}
       </div>
-
+      <Client />
       <Footer />
     </div>
   );
