@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import Header from "../components/layouts/Header";
 
 import bg from "../img/bg.png";
 
@@ -36,6 +37,8 @@ function Login() {
   };
 
   return (
+    <>
+    <Header />
     <div
       className="flex items-center justify-center h-screen bg-gradient-to-r"
       style={{
@@ -103,6 +106,8 @@ function Login() {
         </form>
       </div>
     </div>
+    </>
+   
   );
 }
 

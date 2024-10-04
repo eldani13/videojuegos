@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import Product from "../components/Product";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
+import { CartUtils } from "../utils/cartUtils"
 
 function Games() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [cart, setCart] = useState([]);
+  const cartUtils = new CartUtils();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -20,6 +23,10 @@ function Games() {
 
     fetchProducts();
   }, []);
+
+  const handleAddToCart = (product) => {
+    setCart(cartUtils.appendProductInCart(product));
+  };
 
   const filteredProducts = selectedCategory === 'Todos' 
     ? products 
@@ -46,7 +53,7 @@ function Games() {
           columnGap: '70px'
         }}>
           {filteredProducts.map(product => (
-            <Product key={product._id} product={product} />
+            <Product key={product._id} product={product} onAddToCart={handleAddToCart} />
           ))}
         </div>
       </div>

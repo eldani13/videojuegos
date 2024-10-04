@@ -14,12 +14,11 @@ export default function Footeer() {
       <div className="main w-full bg-[#f7002f]">
         <div className="grid w-full grid-cols-2 gap-8 px-6 py-8 md:grid-cols-4"></div>
         <div className="w-full bg-[#f5d8dd] px-4 py-6 sm:flex sm:items-center sm:justify-between">
-          <Footer.Copyright href="#" by=" DigitalGames™" year={2024} className="text-black" />
+          <Footer.Copyright href="/" by=" DigitalGames™" year={2024} className="text-black" />
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-            <Footer.Icon href="#" icon={BsFacebook} className="text-[#f7002f] hover:text-black" />
-            <Footer.Icon href="#" icon={BsInstagram} className="text-[#f7002f] hover:text-black" />
-            <Footer.Icon href="#" icon={BsTwitter} className="text-[#f7002f] hover:text-black" />
-            <Footer.Icon href="#" icon={BsGithub} className="text-[#f7002f] hover:text-black" />
+            <Footer.Icon href="https://www.facebook.com/share/Vsro3jkyHZsnsRLx/?mibextid=LQQJ4d" icon={BsFacebook} className="text-[#f7002f] hover:text-black" />
+            <Footer.Icon href="https://www.instagram.com/digital__games___?igsh=Z21hY2JsemZhZHA4&utm_source=qr" icon={BsInstagram} className="text-[#f7002f] hover:text-black" />
+            <Footer.Icon href="https://github.com/eldani13" icon={BsGithub} className="text-[#f7002f] hover:text-black" />
           </div>
         </div>
       </div>

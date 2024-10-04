@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import Logo from "../img/logo.png";
+import EditProduct from "./EditProduct";
 
 function Dashboard() {
   const [name, setName] = useState("");
@@ -14,11 +16,13 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [fetchLoading, setFetchLoading] = useState(true);
-  const navigate = useNavigate(); 
+  const [isEditing, setIsEditing] = useState(false); 
+  const [selectedProduct, setSelectedProduct] = useState(null); 
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login"); 
+    navigate("/login");
   };
 
   const fetchProducts = async () => {
@@ -40,7 +44,7 @@ function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login"); 
+      navigate("/login");
     } else {
       fetchProducts();
     }
@@ -88,20 +92,40 @@ function Dashboard() {
     }
   };
 
-  return (
-    <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
-      <h1 className="text-2xl font-bold mb-4 text-center">Dashboard</h1>
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setIsEditing(true);
+  };
 
-      <div className="text-right">
+  const handleSaveEdit = () => {
+    setIsEditing(false);
+    fetchProducts(); 
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setSelectedProduct(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <div className="bg-[#f7002f] p-4 shadow-md flex justify-between items-center">
+        <h1 className="text-white text-2xl font-bold flex justify-center items-center gap-8">
+          <img src={Logo} alt="Logo" className="w-16" />
+          Dashboard
+        </h1>
         <button
           onClick={handleLogout}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+          className="bg-black hover:bg-[#494848] text-white font-bold py-2 px-4 rounded"
         >
           Cerrar Sesión
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="container mx-auto mt-10 p-6 grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold mb-4">Agregar Producto</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-red-500 font-semibold">
             Nombre del Producto:
@@ -212,6 +236,67 @@ function Dashboard() {
           <p className="mt-2 text-center text-green-600">{message}</p>
         )}
       </form>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold mb-4">Productos Actuales</h2>
+          {fetchLoading ? (
+            <Loading />
+          ) : products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-md transition"
+                >
+                  <img
+                    src={`http://localhost:5000${product.image}`}
+                    alt={product.name}
+                    className="w-full h-64 object-cover rounded mb-4"
+                  />
+                  <h3 className="text-lg font-bold mb-2">{product.name}</h3>
+                  <p className="text-black mb-1 text-justify">
+                    {product.description}
+                  </p>
+                  <p className="text-black font-semibold">
+                    Precio: 
+                    <span className="text-[#f7002f] ml-1">
+                      ${product.price}
+                      {product.oldPrice && (
+                        <span className="text-sm text-gray-500 line-through ml-2">
+                          ${product.oldPrice}
+                        </span>
+                      )}
+                    </span>
+                  </p>
+                  {localStorage.getItem("token") && (
+                    <button
+                      className="bg-blue-500 text-white py-2 px-4 rounded mt-2"
+                      onClick={() => handleEdit(product)}
+                    >
+                      Editar
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center">No hay productos disponibles.</p>
+          )}
+        </div>
+      </div>
+
+      {isEditing && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-8 rounded shadow-lg">
+            <EditProduct
+              product={selectedProduct}
+              onSave={handleSaveEdit}
+              onCancel={handleCancelEdit}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

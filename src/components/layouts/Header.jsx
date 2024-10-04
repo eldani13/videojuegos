@@ -84,7 +84,8 @@ function Header() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <img src={logo} alt="Logo" className="w-16" />
+            <a href="/"><img src={logo} alt="Logo" className="w-16"  /></a>
+            
           </div>
 
           <div className="hidden md:flex md:w-1/3">
@@ -120,11 +121,11 @@ function Header() {
           </nav>
 
           <div className="hidden md:flex justify-around p-4 gap-6">
-            <a href="#" aria-label="Instagram">
+            <a href="https://www.instagram.com/digital__games___?igsh=Z21hY2JsemZhZHA4&utm_source=qr" aria-label="Instagram">
               <BsInstagram className="text-white hover:text-black w-7 h-7" />
             </a>
 
-            <a href="#" aria-label="Facebook">
+            <a href="https://www.facebook.com/share/Vsro3jkyHZsnsRLx/?mibextid=LQQJ4d" aria-label="Facebook">
               <BsFacebook className="text-white hover:text-black w-7 h-7" />
             </a>
 
