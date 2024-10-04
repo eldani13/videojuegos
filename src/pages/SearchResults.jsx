@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import Product from "../components/Product"; 
+import AOS from "aos"; 
+import "aos/dist/aos.css"; 
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -38,43 +40,48 @@ function SearchResults() {
     }
   }, [searchTerm, games]);
 
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <div>
       <Header />
       <div className="text-center py-8">
         <h1 className="title text-4xl font-semibold uppercase text-black">
-          Resultado de busqueda para:{" "}
+          Resultado de búsqueda para:{" "}
           <span className="text-[#f7002f]">{searchTerm}</span>
         </h1>
       </div>
       {filteredGames.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredGames.map((game) => (
-            <Product
-              key={game.id}
-              product={{
-                id: game.id,
-                name: game.name,
-                image: game.image,
-                description: game.description,
-                price: game.price,
-                oldPrice: game.oldPrice,
-                discount: game.discount,
-                category: game.category,
-              }}
-              onAddToCart={(addedProduct) =>
-                console.log("Añadido al carrito:", addedProduct)
-              }
-              isDashboard={false}
-            />
+          {filteredGames.map((game, index) => (
+            <div data-aos="fade-up" data-aos-duration="500" key={game.id}>
+              <Product
+                product={{
+                  id: game.id,
+                  name: game.name,
+                  image: game.image,
+                  description: game.description,
+                  price: game.price,
+                  oldPrice: game.oldPrice,
+                  discount: game.discount,
+                  category: game.category,
+                }}
+                onAddToCart={(addedProduct) =>
+                  console.log("Añadido al carrito:", addedProduct)
+                }
+                isDashboard={false}
+              />
+            </div>
           ))}
+
+          
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center min-h-screen text-center">
           <span className="text-6xl font-bold text-red-600">404</span>
-          <span className="text-2xl font-semibold text-gray-800">
-            NOT FOUND
-          </span>
+          <span className="text-2xl font-semibold text-gray-800">NOT FOUND</span>
           <p className="mt-4 text-gray-600">
             Lo sentimos, no hemos encontrado resultados para tu búsqueda.
           </p>

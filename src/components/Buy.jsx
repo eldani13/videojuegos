@@ -1,51 +1,57 @@
-import React from "react";
-import playstation from '../img/playstation.webp'
-import playstationIcon  from '../assets/playstation.svg'
-import xbox from '../img/xbox.webp'
-import xboxIcon from '../assets/xbox.svg'
-import nintendo from '../img/nintendo.webp'
-import nintendoIcon from '../assets/nintendo.svg'
+import React, { useEffect } from "react"; 
+import playstation from '../img/playstation.webp';
+import playstationIcon from '../assets/playstation.svg';
+import xbox from '../img/xbox.webp';
+import xboxIcon from '../assets/xbox.svg';
+import nintendo from '../img/nintendo.webp';
+import nintendoIcon from '../assets/nintendo.svg';
+import AOS from 'aos'; 
+import 'aos/dist/aos.css'; 
 
-import '../styles/buy.css'
+import '../styles/buy.css';
 
 function Buy() {
+  useEffect(() => {
+    AOS.init(); 
+  }, []);
+
   const categories = [
-  {
-    id: 1,
-    title: "PlayStation",
-    description: (
-      <span className="">
-        Juegos y suscripciones de PlayStation ﾠ<img src={playstationIcon} alt="PlayStation Logo" className="inline w-6 h-6" />
-      </span>
-    ),
-    image: playstation,
-  },
+    {
+      id: 1,
+      title: "PlayStation",
+      description: (
+        <span className="">
+          Juegos y suscripciones de PlayStation ﾠ<img src={playstationIcon} alt="PlayStation Logo" className="inline w-6 h-6" />
+        </span>
+      ),
+      image: playstation,
+    },
     {
       id: 2,
       title: "Xbox",
       description: (
         <span>
-            Juegos y suscripciones de Xbox ﾠ<img src={xboxIcon} alt="Xbox Logo" className="inline w-6 h-6" />
+          Juegos y suscripciones de Xbox ﾠ<img src={xboxIcon} alt="Xbox Logo" className="inline w-6 h-6" />
         </span>
       ),
-      image: xbox, 
-    },                              
+      image: xbox,
+    },
     {
       id: 3,
       title: "Nintendo",
       description: (
         <span>
-            Juegos y suscripciones de Nintendo ﾠ<img src={nintendoIcon} alt="Nintengo Logo" className="inline w-6 h-6" />
+          Juegos y suscripciones de Nintendo ﾠ<img src={nintendoIcon} alt="Nintengo Logo" className="inline w-6 h-6" />
         </span>
       ),
-      image: nintendo, 
+      image: nintendo,
     },
   ];
 
   return (
     <div className="text-center py-8">
       <h1 className="title text-4xl font-semibold uppercase text-black">
-        Compra tus juegos digitales de <span className="text-[#f7002f]">forma segura y al mejor precio</span> 
+        Compra tus juegos digitales de <span className="text-[#f7002f]">forma segura y al mejor precio</span>
       </h1>
       <p className="text-gray-500 mt-2">
         Obtén una experiencia de compra confiable y de calidad en  <span className="text-[#f7002f]">DIGITAL GAMES</span>. Tu destino para los mejores juegos digitales.
@@ -56,6 +62,7 @@ function Buy() {
           <div
             key={category.id}
             className="relative w-80 bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
+            data-aos="fade-up" 
           >
             <img
               src={category.image}

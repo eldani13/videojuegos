@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css"; // Importar CSS de AOS
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../img/logo.png";
 import CartModal from "../CartModal";
@@ -22,6 +24,7 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    AOS.init(); // Inicializar AOS
     const fetchGames = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/products/");

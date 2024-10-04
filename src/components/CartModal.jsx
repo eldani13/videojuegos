@@ -1,6 +1,7 @@
 import "../styles/CartModal.css";
 import { setCookie, getCookie } from "../utils/cookieUtils";
 import React, { useEffect, useState } from "react";
+import AOS from "aos"; // Importar AOS
 import Cookies from "js-cookie";
 import { CartUtils } from "../utils/cartUtils";
 
@@ -16,34 +17,25 @@ function CartModal({ isOpen, onClose }) {
   useEffect(() => {
     if (!isOpen) return;
 
-    const gett = cartUtils.getProductsInCartByCart();
-    setCart(gett);
+    AOS.init(); // Inicializar AOS cuando se abre el modal
+
+    try {
+      const gett = cartUtils.getProductsInCartByCart();
+      setCart(gett);
+    } catch (error) {
+      console.error("Error al obtener los productos del carrito:", error);
+    }
   }, [isOpen]);
 
   const clearCart = () => {
     setCart({ products: [] });
-    setCookie("shopping_cart", JSON.stringify({ products: [] })); 
+    setCookie("shopping_cart", JSON.stringify({ products: [] }));
   };
 
   const removeProduct = (productId) => {
     const updatedProducts = cart.products.filter(product => product._id !== productId);
     setCart({ products: updatedProducts });
-    setCookie("shopping_cart", JSON.stringify({ products: updatedProducts })); 
-  };
-
-  const emojiApiKey = '948dcf1535f6cd55e11585b441d65b38b52927cd';
-
-  const getEmoji = async (emojiName) => {
-    try {
-      const response = await axios.get(`https://emoji-api.com/emojis?access_key=${emojiApiKey}`);
-      const emojis = response.data;
-      
-      const emoji = emojis.find(e => e.slug === emojiName);
-      return emoji ? emoji.character : '❓'; 
-    } catch (error) {
-      console.error("Error al obtener emojis:", error);
-      return '❓'; 
-    }
+    setCookie("shopping_cart", JSON.stringify({ products: updatedProducts }));
   };
 
   const handleProceedToPayment = () => {
@@ -72,10 +64,6 @@ function CartModal({ isOpen, onClose }) {
     
     window.open(whatsappUrl, "_blank");
   };
-  
-  
-  
-  
 
   if (!isOpen) return null;
 
@@ -90,9 +78,14 @@ function CartModal({ isOpen, onClose }) {
       className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center w-full h-full"
       onClick={handleOverlayClick}
     >
-      <div className="modal-content bg-white rounded-lg shadow-2xl max-w-lg w-full p-6 relative" style={{
-        boxShadow: '1px 1px 20px black'
-      }}>
+      <div 
+        className="modal-content bg-white rounded-lg shadow-2xl max-w-lg w-full p-6 relative" 
+        data-aos="fade-in"
+        data-aos-duration="300"
+        style={{
+          boxShadow: '1px 1px 20px black'
+        }}
+      >
         <button
           className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl font-bold focus:outline-none"
           onClick={onClose}
@@ -101,7 +94,7 @@ function CartModal({ isOpen, onClose }) {
         </button>
         <h2 className="text-2xl font-bold text-black text-center mb-4">Carrito de Compras</h2>
         
-        {cart && cart.products && cart.products.length > 0 ? (
+        {cart && cart.products.length > 0 ? (
           <>
             <ul className="space-y-4 overflow-y-auto max-h-60">
               {cart.products.map((product) => (
@@ -145,8 +138,9 @@ function CartModal({ isOpen, onClose }) {
                 COP
               </p>
               <button 
+                style={{ pointerEvents: 'auto' }} // Asegura que el botón se pueda hacer clic
                 className="w-full mt-4 bg-[#f7002f] hover:bg-[#f04968] text-white text-lg font-semibold py-3 rounded-lg shadow-md transition-all"
-                onClick={handleProceedToPayment} // Cambiado aquí
+                onClick={handleProceedToPayment}
               >
                 Proceder al pago
               </button>
