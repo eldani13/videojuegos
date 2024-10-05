@@ -9,6 +9,8 @@ import Contact from './pages/Contact';
 import Games from './pages/Games';
 import Preview from './pages/Preview';
 import SearchResults from './pages/SearchResults';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacity';
 
 
 
@@ -24,6 +26,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/Preview/:productId" element={<Preview />} />
         <Route path="/Search" element={<SearchResults />} />
+        <Route path="/Terms" element={<Terms/>}/>
+        <Route path="/Privacy" element={<Privacy/>}/>
       </Routes>
     </Router>
   );

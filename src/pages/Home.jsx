@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import AOS from "aos"; // Importar AOS
-import "aos/dist/aos.css"; // Importar los estilos de AOS
+import AOS from "aos"; 
+import "aos/dist/aos.css";
 import Product from "../components/Product";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
@@ -18,7 +18,7 @@ function Home() {
   const cartUtils = new CartUtils();
 
   useEffect(() => {
-    AOS.init(); // Inicializar AOS
+    AOS.init(); 
     const fetchProducts = async () => {
       const response = await fetch("http://localhost:5000/api/products");
       if (!response.ok) {

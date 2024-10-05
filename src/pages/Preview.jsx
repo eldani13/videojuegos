@@ -3,26 +3,112 @@ import { useParams } from "react-router-dom";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import { BsCart, BsShare, BsWhatsapp } from "react-icons/bs";
+import Loading from "../components/Loading"; 
 
 function Preview() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(false); 
+  const [message, setMessage] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/${productId}`)
-      .then((response) => {
+    const fetchProduct = async () => {
+      setLoading(true); 
+      try {
+        const response = await fetch(`http://localhost:5000/api/products/${productId}`);
         if (!response.ok) {
           throw new Error("Producto no encontrado");
         }
-        return response.json();
-      })
-      .then((data) => setProduct(data))
-      .catch((error) => console.log("Error al obtener el producto:", error));
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) {
+        console.log("Error al obtener el producto:", error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchProduct();
   }, [productId]);
+
+  const handleWhatsAppClick = () => {
+    if (product) {
+      const message =
+        `🌟 *Hola,*\n\n` +
+        `Estoy interesado en el producto *"${product.name}"*.\n` +
+        `💰 *Precio:* ${product.price.toLocaleString("es-CO")} COP\n\n` +
+        `✨ *Características:* \n` +
+        `${product.features
+          .map((feature, index) => `- ${feature}`)
+          .join("\n")}\n\n` +
+        `📦 *Categoría:* ${product.category}\n` +
+        `🤝 Espero tu respuesta. ¡Gracias!`;
+
+      const phoneNumber = "+573112928194";
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+        message
+      )}`;
+      window.open(whatsappUrl, "_blank");
+    }
+  };
+
+  const handleShareClick = () => {
+    const shareData = {
+      title: product.name,
+      text: `¡Mira este producto! ${product.name} - Precio: ${product.price.toLocaleString("es-CO")} COP`,
+      url: `http://localhost:3000/products/${productId}`,
+    };
+
+    if (navigator.share) {
+      navigator
+        .share(shareData)
+        .then(() => console.log("Producto compartido exitosamente"))
+        .catch((error) =>
+          console.error("Error al compartir el producto:", error)
+        );
+    } else {
+      const fallbackUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        shareData.url
+      )}`;
+      window.open(fallbackUrl, "_blank");
+    }
+  };
+
+  const handleAddToCart = async () => {
+    setLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000)); 
+  
+      const currentCart = getCartFromCookies();
+      const existingProductIndex = currentCart.products.findIndex(
+        (item) => item._id === product._id
+      );
+  
+      if (existingProductIndex > -1) {
+        currentCart.products[existingProductIndex].quantity += 1;
+      } else {
+        currentCart.products.push({ ...product, quantity: 1 });
+      }
+  
+      setCookie("shopping_cart", JSON.stringify(currentCart));
+      setMessage("Juego añadido al carrito");
+      setModalOpen(true);
+    } catch (error) {
+      setMessage("Error al añadir al carrito.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
+  if (loading) {
+    return <Loading message="Cargando producto..." />; 
+  }
 
   if (!product) {
     return (
-      <p className="text-center text-xl text-gray-600">Cargando producto...</p>
+      <p className="text-center text-xl text-gray-600">Producto no encontrado.</p>
     );
   }
 
@@ -44,29 +130,28 @@ function Preview() {
               {product.name}
             </h1>
 
-            <p className="text-2xl font-extrabold  mb-4">
-              Precio: <span className="text-[#f7002f]">{product.price} COP</span>  
+            <p className="text-2xl font-extrabold mb-4">
+              Precio:{" "}
+              <span className="text-[#f7002f]">
+                ${product.price.toLocaleString("es-CO")} COP{" "}
+              </span>
             </p>
 
             <p className="text-lg font-extrabold text-black leading-relaxed mb-4">
-              Descripcion: <span className="font-normal">{product.description}</span> 
+              Descripción:{" "}
+              <span className="font-normal">{product.description}</span>
             </p>
 
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Características de  <span className="text-[#f7002f]">{product.name}</span>:
+                Características de{" "}
+                <span className="text-[#f7002f]">{product.name}</span>:
               </h3>
               <ul className="list-disc list-inside text-gray-700">
-                <li>Modos de juego: Ultimate Team, Carrera, Volta</li>
-                <li>
-                  Número de jugadores: Multijugador local y en línea (1-22
-                  jugadores)
-                </li>
-                <li>Gráficos mejorados con HyperMotion Technology</li>
-                <li>
-                  Equipos y ligas oficiales: más de 700 equipos y 30 ligas
-                </li>
-                <li>Soporte para juego cruzado en plataformas seleccionadas</li>
+                {Array.isArray(product.features) &&
+                  product.features.map((feature, index) => (
+                    <li key={index}>{feature}</li>
+                  ))}
               </ul>
             </div>
 
@@ -81,24 +166,54 @@ function Preview() {
 
             <div className="mb-6">
               <p className="text-md text-black">
-                <span className="font-semibold text-lg">Entrega estimada:</span>  Inmediata
+                <span className="font-semibold text-lg">Entrega estimada:</span>{" "}
+                Inmediata
               </p>
             </div>
 
             <div className="flex flex-col lg:flex-row gap-4">
-              <button className="w-full flex justify-center items-center gap-2 font-semibold text-xs lg:w-auto px-8 py-3 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition-all">
-              <BsWhatsapp className="text-gray-800 hover:text-gray-600 w-5 h-5" />
+              <button
+                onClick={handleWhatsAppClick}
+                className="w-full flex justify-center items-center gap-2 font-semibold text-xs lg:w-auto px-8 py-3 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition-all"
+              >
+                <BsWhatsapp className="text-gray-800 hover:text-gray-600 w-5 h-5" />
                 Solicítalo aquí
               </button>
-              <button className="w-full text-xs font-semibold flex justify-center  items-center gap-2 lg:w-auto px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
-              <BsShare className="text-gray-800 hover:text-gray-600 w-5 h-5" />
+              <button
+                className="w-full text-xs font-semibold flex justify-center items-center gap-2 lg:w-auto px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all"
+                onClick={handleShareClick}
+              >
+                <BsShare className="text-gray-800 hover:text-gray-600 w-5 h-5" />
                 Compartir Producto
               </button>
-              <button className="w-full text-xs lg:w-auto px-6 py-2 bg-[#f7002f] font-semibold text-white rounded-lg shadow-md hover:bg-[#f04968] transition-all flex justify-center items-center gap-2">
-                <BsCart className="text-gray-800 hover:text-gray-600 w-5 h-5" />
-                Agregar al Carrito
-              </button>
+              {/* <button
+                onClick={handleAddToCart}
+                className="w-full text-xs lg:w-auto px-6 py-2 bg-[#f7002f] font-semibold text-white rounded-lg shadow-md hover:bg-[#f04968] transition-all flex justify-center items-center gap-2"
+              >
+                {loading ? (
+                  <Loading message="Cargando..." />
+                ) : (
+                  <>
+                    <BsCart className="text-gray-800 hover:text-gray-600 w-5 h-5" />
+                    Agregar al Carrito
+                  </>
+                )}
+              </button> */}
             </div>
+
+            {/* {modalOpen && (
+              <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col">
+                  <p className="text-lg">{message}</p>
+                  <button
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                    onClick={() => setModalOpen(false)}
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            )} */}
           </div>
         </div>
       </div>

@@ -52,14 +52,14 @@ function Contact() {
               <FaEnvelope className="text-3xl md:text-4xl text-red-500" />
               <div>
                 <h3 className="text-xl md:text-2xl font-bold text-gray-700">Email</h3>
-                <p className="text-gray-600 text-sm md:text-lg">info@tutienda.com</p>
+                <p className="text-gray-600 text-sm md:text-lg">soporte@digitalgames.com</p>
               </div>
             </div>
             <div className="flex items-center bg-gray-100 p-6 rounded-lg shadow-lg space-x-4" data-aos="zoom-in">
               <FaMapMarkerAlt className="text-3xl md:text-4xl text-red-500" />
               <div>
                 <h3 className="text-xl md:text-2xl font-bold text-gray-700">Dirección</h3>
-                <p className="text-gray-600 text-sm md:text-lg">123 Calle Principal, Ciudad</p>
+                <p className="text-gray-600 text-sm md:text-lg">Barranquilla, Colombia</p>
               </div>
             </div>
           </div>

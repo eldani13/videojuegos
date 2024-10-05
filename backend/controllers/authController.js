@@ -7,12 +7,20 @@ const jwt = require('jsonwebtoken');
 const registerUser = async (req, res) => {
   const { username, password } = req.body;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: 'El nombre de usuario ya está en uso' });
+    }
 
-  const newUser = new User({ username, password: hashedPassword });
-  await newUser.save();
-  
-  res.status(201).json({ message: 'Usuario creado exitosamente' });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
+
+    res.status(201).json({ message: 'Usuario creado exitosamente' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al registrar el usuario' });
+  }
 };
 
 const loginUser = async (req, res) => {

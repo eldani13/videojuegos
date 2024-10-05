@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css"; // Importar CSS de AOS
+import "aos/dist/aos.css"; 
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../img/logo.png";
 import CartModal from "../CartModal";
 import { BiSearch } from "react-icons/bi";
-import { BsInstagram, BsFacebook, BsCart } from "react-icons/bs";
+import { BsInstagram, BsFacebook, BsCart, BsPerson } from "react-icons/bs";
 import GameResults from "../GamesResults";
 
 const menuItems = [
@@ -24,7 +24,7 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    AOS.init(); // Inicializar AOS
+    AOS.init(); 
     const fetchGames = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/products/");
@@ -132,6 +132,10 @@ function Header() {
               <BsFacebook className="text-white hover:text-black w-7 h-7" />
             </a>
 
+            <a href="/login" aria-label="Login">
+              <BsPerson className="text-white hover:text-black w-7 h-7" />
+            </a>
+
             <button onClick={toggleCart} aria-label="Carrito de compras">
               <BsCart className="text-white hover:text-black w-7 h-7" />
             </button>
@@ -183,12 +187,16 @@ function Header() {
           </nav>
 
           <div className="flex justify-around mt-8">
-            <a href="#" aria-label="Instagram">
+            <a href="https://www.instagram.com/digital__games___?igsh=Z21hY2JsemZhZHA4&utm_source=qr" aria-label="Instagram">
               <BsInstagram className="text-gray-800 hover:text-gray-600 w-7 h-7" />
             </a>
 
-            <a href="#" aria-label="Facebook">
+            <a href="https://www.facebook.com/share/Vsro3jkyHZsnsRLx/?mibextid=LQQJ4d" aria-label="Facebook">
               <BsFacebook className="text-gray-800 hover:text-gray-600 w-7 h-7" />
+            </a>
+
+            <a href="/login" aria-label="Login">
+              <BsPerson className="text-gray-800 hover:text-gray-600 w-7 h-7" />
             </a>
 
             <button onClick={toggleCart} aria-label="Carrito de compras">

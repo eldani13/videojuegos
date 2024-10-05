@@ -16,8 +16,9 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [fetchLoading, setFetchLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false); 
-  const [selectedProduct, setSelectedProduct] = useState(null); 
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [features, setFeatures] = useState([""]);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -64,6 +65,10 @@ function Dashboard() {
     formData.append("category", category);
     formData.append("image", image);
 
+    features.forEach((feature) => {
+      formData.append("features[]", feature);
+    });
+
     try {
       const res = await fetch("http://localhost:5000/api/products", {
         method: "POST",
@@ -81,6 +86,7 @@ function Dashboard() {
         setDiscount("");
         setImage(null);
         setCategory("Todos");
+        setFeatures([""]);
         fetchProducts();
       } else {
         setMessage(data.message || "Error al subir el producto.");
@@ -92,6 +98,53 @@ function Dashboard() {
     }
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
+
+  const handleDelete = (productId) => {
+    setProductIdToDelete(productId); 
+    setShowModal(true); 
+  };
+
+  const confirmDelete = async () => {
+    if (!productIdToDelete) return; 
+
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/products/${productIdToDelete}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("Producto eliminado exitosamente.");
+        fetchProducts();
+      } else {
+        setMessage(data.message || "Error al eliminar el producto.");
+      }
+    } catch (error) {
+      setMessage("Error en la conexión: " + error.message);
+    } finally {
+      setShowModal(false); 
+    }
+  };
+
+  const handleFeatureChange = (index, value) => {
+    const newFeatures = [...features];
+    newFeatures[index] = value;
+    setFeatures(newFeatures);
+  };
+
+  const handleAddFeature = () => {
+    setFeatures([...features, ""]);
+  };
+
+  const handleRemoveFeature = (index) => {
+    setFeatures(features.filter((_, i) => i !== index));
+  };
+
   const handleEdit = (product) => {
     setSelectedProduct(product);
     setIsEditing(true);
@@ -99,7 +152,7 @@ function Dashboard() {
 
   const handleSaveEdit = () => {
     setIsEditing(false);
-    fetchProducts(); 
+    fetchProducts();
   };
 
   const handleCancelEdit = () => {
@@ -125,117 +178,154 @@ function Dashboard() {
       <div className="container mx-auto mt-10 p-6 grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold mb-4">Agregar Producto</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-red-500 font-semibold">
-            Nombre del Producto:
-          </label>
-          <input
-            type="text"
-            placeholder="Nombre del producto"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="w-full border border-gray-300 p-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold">Descripción:</label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-            className="w-full border border-gray-300 p-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold">Precio:</label>
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
-            min="0"
-            className="w-full border border-gray-300 p-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold">Viejo Precio:</label>
-          <input
-            type="number"
-            value={oldPrice}
-            onChange={(e) => setOldPrice(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold">Descuento:</label>
-          <input
-            type="number"
-            value={discount}
-            onChange={(e) => setDiscount(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold">Categoría:</label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
-          >
-            <option value="Todos">Todos</option>
-            <option value="Acción">Acción</option>
-            <option value="Lucha">Lucha</option>
-            <option value="Aventura">Aventura</option>
-            <option value="Arcade">Arcade</option>
-            <option value="Deportes">Deportes</option>
-            <option value="Estrategia">Estrategia</option>
-            <option value="Simulación">Simulación</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block font-semibold">Imagen del Producto:</label>
-          <input
-            type="file"
-            onChange={(e) => setImage(e.target.files[0])}
-            accept="image/*"
-            required
-            className="w-full border border-gray-300 p-2 rounded"
-          />
-          {image && (
-            <div className="mt-2">
-              <p className="font-semibold">Previsualización:</p>
-              <img
-                src={URL.createObjectURL(image)}
-                alt="Previsualización"
-                className="w-full h-auto rounded mt-2"
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                className="block font-semibold mb-2 uppercase"
+                htmlFor="product-name"
+              >
+                Nombre del Producto:
+              </label>
+              <input
+                id="product-name"
+                type="text"
+                placeholder="Ingresa el nombre del producto"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200 placeholder-gray-400"
               />
             </div>
-          )}
-        </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-2 rounded ${
-            loading ? "bg-gray-400" : "bg-red-500 hover:bg-red-600"
-          } text-white font-bold flex justify-center items-center`}
-        >
-          {loading ? <Loading /> : "Subir Producto"}
-        </button>
+            <div>
+              <label className="block font-semibold mb-2 uppercase" htmlFor="description">
+                Descripción:
+              </label>
+              <input
+                id="description"
+                type="text"
+                placeholder="Escribe una breve descripción"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200 placeholder-gray-400"
+              />
+            </div>
 
-        {message && (
-          <p className="mt-2 text-center text-green-600">{message}</p>
-        )}
-      </form>
+            <div>
+              <label className="block font-semibold mb-2 uppercase" htmlFor="price">
+                Precio:
+              </label>
+              <input
+                id="price"
+                type="number"
+                placeholder="Ej. 19.99"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+                min="0"
+                className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200 placeholder-gray-400"
+              />
+            </div>
+
+            <div>
+              <label className="block font-semibold mb-2 uppercase" htmlFor="old-price">
+                Viejo Precio:
+              </label>
+              <input
+                id="old-price"
+                type="number"
+                placeholder="Ej. 29.99"
+                value={oldPrice}
+                onChange={(e) => setOldPrice(e.target.value)}
+                className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200 placeholder-gray-400"
+              />
+            </div>
+
+            <div>
+              <label className="block font-semibold mb-2 uppercase" htmlFor="discount">
+                Descuento (%):
+              </label>
+              <input
+                id="discount"
+                type="number"
+                placeholder="Ej. 10"
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+                className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200 placeholder-gray-400"
+              />
+            </div>
+
+            <div>
+              <label className="block font-semibold mb-2 uppercase" htmlFor="category">
+                Categoría:
+              </label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200"
+              >
+                <option value="Todos">Todos</option>
+                <option value="Acción">Acción</option>
+                <option value="Lucha">Lucha</option>
+                <option value="Aventura">Aventura</option>
+                <option value="Arcade">Arcade</option>
+                <option value="Deportes">Deportes</option>
+                <option value="Estrategia">Estrategia</option>
+                <option value="Simulación">Simulación</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block font-semibold mb-2 uppercase">
+                Características:
+              </label>
+              {features.map((feature, index) => (
+                <div key={index} className="flex items-center space-x-2 mb-2">
+                  <input
+                    type="text"
+                    placeholder="Característica del producto"
+                    value={feature}
+                    onChange={(e) => handleFeatureChange(index, e.target.value)}
+                    className="flex-1 border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200 placeholder-gray-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveFeature(index)}
+                    className="bg-red-500 text-white px-3 rounded hover:bg-red-600"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddFeature}
+                className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >
+                Agregar Característica
+              </button>
+            </div>
+
+            <div>
+              <label className="block font-semibold mb-2 uppercase">Imagen:</label>
+              <input
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+                accept="image/*"
+                required
+                className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#f7002f] text-white font-bold py-3 rounded-md hover:bg-black transition duration-200"
+            >
+              {loading ? "Subiendo..." : "Agregar Producto"}
+            </button>
+          </form>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -247,35 +337,52 @@ function Dashboard() {
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-md transition"
+                  className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between"
                 >
                   <img
                     src={`http://localhost:5000${product.image}`}
                     alt={product.name}
                     className="w-full h-64 object-cover rounded mb-4"
                   />
-                  <h3 className="text-lg font-bold mb-2">{product.name}</h3>
-                  <p className="text-black mb-1 text-justify">
-                    {product.description}
-                  </p>
-                  <p className="text-black font-semibold">
-                    Precio: 
-                    <span className="text-[#f7002f] ml-1">
-                      ${product.price}
-                      {product.oldPrice && (
-                        <span className="text-sm text-gray-500 line-through ml-2">
-                          ${product.oldPrice}
-                        </span>
-                      )}
-                    </span>
-                  </p>
+
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-bold mb-2 line-clamp-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-black mb-1 text-justify line-clamp-2">
+                      {product.description}
+                    </p>
+                    <p className="text-black font-semibold">
+                      Precio:
+                      <span className="text-[#f7002f] ml-1">
+                        ${product.price.toLocaleString("es-CO")} COP{" "}
+                        {product.oldPrice && (
+                          <span className="text-sm text-gray-500 line-through ml-2">
+                            ${product.oldPrice}
+                          </span>
+                        )}
+                      </span>
+                    </p>
+                  </div>
+
                   {localStorage.getItem("token") && (
-                    <button
-                      className="bg-blue-500 text-white py-2 px-4 rounded mt-2"
-                      onClick={() => handleEdit(product)}
-                    >
-                      Editar
-                    </button>
+                    <div className="flex gap-2 mt-4">
+                      <button
+                        className="bg-black text-white py-2 px-4 rounded w-full"
+                        onClick={() => handleEdit(product)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="bg-red-500 text-white py-2 px-4 rounded w-full"
+                        onClick={() => {
+                          setProductIdToDelete(product._id);
+                          setShowModal(true);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   )}
                 </div>
               ))}
@@ -285,6 +392,29 @@ function Dashboard() {
           )}
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-lg font-bold mb-4">Confirmar Eliminación</h2>
+            <p>¿Estás seguro de que deseas eliminar este producto?</p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setShowModal(false)}
+                className="mr-2 bg-gray-500 text-white py-1 px-2 rounded"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="bg-red-500 text-white py-1 px-2 rounded"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {isEditing && (
         <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center">

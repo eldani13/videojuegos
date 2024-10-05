@@ -33,7 +33,7 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
   };
 
   return (
-    <div className="relative flex flex-col items-center rounded-lg bg-white shadow-lg transition-transform transform hover:scale-105 duration-300 w-80 mx-auto mb-10">
+    <div className="relative flex flex-col justify-between items-center rounded-lg bg-white shadow-lg transition-transform transform hover:scale-105 duration-300 w-80 mx-auto mb-10 h-[500px]">
       {product.discount && (
         <div className="absolute top-0 left-0 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-tr-lg rounded-bl-lg">
           {product.discount}% OFF
@@ -44,19 +44,20 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
         alt={product.name}
         className="h-64 w-full object-cover rounded-t-lg"
       />
-      <div className="p-4 text-center">
-        <h5 className="text-lg font-semibold text-gray-900 uppercase">
+      <div className="p-4 text-center flex-grow flex flex-col justify-between">
+        <h5 className="text-lg font-semibold text-gray-900 uppercase line-clamp-1">
           {product.name}
         </h5>
         <p className="text-sm text-gray-600">{product.category}</p>
         <div className="my-2">
           {product.oldPrice && (
             <p className="text-gray-500 text-sm line-through">
-              {product.oldPrice} COP
+              {product.oldPrice.toLocaleString("es-CO")} COP{" "}
+
             </p>
           )}
           <p className="text-xl font-bold text-[#f7002f]">
-            {product.price} COP
+            ${product.price.toLocaleString("es-CO")} COP{" "}
           </p>
           {product.discount && (
             <p className="text-sm text-red-600 font-semibold">
@@ -64,10 +65,12 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
             </p>
           )}
         </div>
-        <p className="text-xs text-gray-500 mt-2">{product.description}</p>
+        <p className="text-xs text-gray-500 mt-2 line-clamp-3 flex-grow">
+          {product.description}
+        </p>
       </div>
 
-      <div className="flex w-full">
+      <div className="mt-auto flex w-full">
         {!isDashboard && (
           <div className="p-4 w-full">
             {loading ? (
@@ -97,8 +100,8 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
               <path
                 fill="none"
                 stroke="white"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M43.5 24a22.505 22.505 0 0 0-39 0"
               />
               <circle
@@ -107,14 +110,14 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
                 r="7.889"
                 fill="none"
                 stroke="white"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 fill="none"
                 stroke="white"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M4.5 24a22.505 22.505 0 0 0 39 0"
               />
             </svg>
@@ -122,20 +125,6 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
           </button>
         </div>
       </div>
-
-      {modalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg p-6 shadow-lg text-center">
-            <h2 className="text-xl font-semibold mb-2">{message}</h2>
-            <button
-              onClick={handleCloseModal}
-              className="py-2 px-4 bg-[#f7002f] text-white rounded-lg hover:bg-[#f04968] transition-colors duration-300"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

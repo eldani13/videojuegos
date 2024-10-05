@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
-import Product from "../components/Product"; 
-import AOS from "aos"; 
-import "aos/dist/aos.css"; 
+import Product from "../components/Product";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -15,6 +15,7 @@ function SearchResults() {
   const searchTerm = query.get("q");
   const [games, setGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
+  const [cart, setCart] = useState([]); 
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -44,6 +45,11 @@ function SearchResults() {
     AOS.init();
   }, []);
 
+  const handleAddToCart = (addedProduct) => {
+    setCart((prevCart) => [...prevCart, addedProduct]); 
+    console.log("Producto añadido al carrito:", addedProduct);
+  };
+
   return (
     <div>
       <Header />
@@ -55,28 +61,15 @@ function SearchResults() {
       </div>
       {filteredGames.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredGames.map((game, index) => (
-            <div data-aos="fade-up" data-aos-duration="500" key={game.id}>
+          {filteredGames.map((game) => (
+            <div data-aos="fade-up" data-aos-duration="500" key={game._id}>
               <Product
-                product={{
-                  id: game.id,
-                  name: game.name,
-                  image: game.image,
-                  description: game.description,
-                  price: game.price,
-                  oldPrice: game.oldPrice,
-                  discount: game.discount,
-                  category: game.category,
-                }}
-                onAddToCart={(addedProduct) =>
-                  console.log("Añadido al carrito:", addedProduct)
-                }
-                isDashboard={false}
+                product={game} 
+                onAddToCart={handleAddToCart} 
+                onDelete={(productId) => console.log("Producto eliminado:", productId)}
               />
             </div>
           ))}
-
-          
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center min-h-screen text-center">

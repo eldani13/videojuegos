@@ -56,7 +56,7 @@ function Login() {
           Iniciar Sesión
         </h2>
         {errorMessage && (
-          <p className="text-red-500 text-center mb-4">{errorMessage}</p>
+          <p className="text-white text-center mb-4">{errorMessage}</p>
         )}
 
         <form onSubmit={handleSubmit}>
