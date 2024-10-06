@@ -7,6 +7,7 @@ import Footer from "../components/layouts/Footer";
 import Slider from "../components/layouts/Slider";
 import Buy from "../components/Buy";
 import Client from "../components/layouts/Client";
+import Features from "../components/Features";
 import { CartUtils } from "../utils/cartUtils";
 import Loading from "../components/Loading";
 
@@ -14,6 +15,7 @@ import "../styles/home.css";
 
 function Home() {
   const [products, setProducts] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const cartUtils = new CartUtils();
 
@@ -27,6 +29,9 @@ function Home() {
       }
       const data = await response.json();
       setProducts(data);
+
+      const featured = data.filter(product => product.isFeatured);
+      setFeaturedProducts(featured);
     };
 
     fetchProducts();
@@ -60,14 +65,16 @@ function Home() {
       <Header />
       <Slider />
       <Buy />
+      <Features products={featuredProducts} />
 
-      <div className="h-36">
+
+      {/* <div className="h-36">
         <h1 className="title flex justify-center text-2xl md:text-4xl font-semibold p-6 text-center">
           JUEGOSﾠ<span className="text-[#f7002f]"> PARA TODOS</span>
         </h1>
-      </div>
+      </div> */}
 
-      <div
+      {/* <div
         className="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] px-5"
         style={{
           columnGap: "70px",
@@ -82,7 +89,7 @@ function Home() {
             />
           </div>
         ))}
-      </div>
+      </div> */}
       <Client />
       <Footer />
     </div>

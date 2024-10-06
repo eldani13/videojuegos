@@ -9,6 +9,8 @@ const ProductSchema = new mongoose.Schema({
   category: String,
   image: String,
   features: [String],
+  type: String,
+  isFeatured: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

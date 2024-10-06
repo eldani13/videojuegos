@@ -15,7 +15,7 @@ function SearchResults() {
   const searchTerm = query.get("q");
   const [games, setGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
-  const [cart, setCart] = useState([]); 
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -46,7 +46,7 @@ function SearchResults() {
   }, []);
 
   const handleAddToCart = (addedProduct) => {
-    setCart((prevCart) => [...prevCart, addedProduct]); 
+    setCart((prevCart) => [...prevCart, addedProduct]);
     console.log("Producto añadido al carrito:", addedProduct);
   };
 
@@ -64,9 +64,11 @@ function SearchResults() {
           {filteredGames.map((game) => (
             <div data-aos="fade-up" data-aos-duration="500" key={game._id}>
               <Product
-                product={game} 
-                onAddToCart={handleAddToCart} 
-                onDelete={(productId) => console.log("Producto eliminado:", productId)}
+                product={game}
+                onAddToCart={handleAddToCart}
+                onDelete={(productId) =>
+                  console.log("Producto eliminado:", productId)
+                }
               />
             </div>
           ))}
@@ -74,7 +76,9 @@ function SearchResults() {
       ) : (
         <div className="flex flex-col items-center justify-center min-h-screen text-center">
           <span className="text-6xl font-bold text-red-600">404</span>
-          <span className="text-2xl font-semibold text-gray-800">NOT FOUND</span>
+          <span className="text-2xl font-semibold text-gray-800">
+            NOT FOUND
+          </span>
           <p className="mt-4 text-gray-600">
             Lo sentimos, no hemos encontrado resultados para tu búsqueda.
           </p>

@@ -1,7 +1,7 @@
 import "../styles/CartModal.css";
 import { setCookie, getCookie } from "../utils/cookieUtils";
 import React, { useEffect, useState } from "react";
-import AOS from "aos"; 
+import AOS from "aos";
 import { CartUtils } from "../utils/cartUtils";
 
 const getCartFromCookies = () => {
@@ -16,7 +16,7 @@ function CartModal({ isOpen, onClose }) {
   useEffect(() => {
     if (!isOpen) return;
 
-    AOS.init(); 
+    AOS.init();
 
     try {
       const gett = cartUtils.getProductsInCartByCart();
@@ -51,7 +51,15 @@ function CartModal({ isOpen, onClose }) {
     const message = cart.products
       .map(
         (product) =>
-          `${cartEmoji} *${product.name}*\n${quantityEmoji} **Cantidad**: ${product.quantity}\n${moneyEmoji} **Precio Unitario**: ${product.price.toLocaleString("es-CO")} COP\n${moneyEmoji} **Subtotal**: ${(product.price * product.quantity).toLocaleString("es-CO")} COP\n📦 **Descripción**: Un producto de alta calidad que garantiza satisfacción.\n`
+          `${cartEmoji} *${product.name}*\n${quantityEmoji} **Cantidad**: ${
+            product.quantity
+          }\n${moneyEmoji} **Precio Unitario**: ${product.price.toLocaleString(
+            "es-CO"
+          )} COP\n${moneyEmoji} **Subtotal**: ${(
+            product.price * product.quantity
+          ).toLocaleString(
+            "es-CO"
+          )} COP\n📦 **Descripción**: Un producto de alta calidad que garantiza satisfacción.\n`
       )
       .join("");
 
@@ -60,7 +68,9 @@ function CartModal({ isOpen, onClose }) {
       0
     );
 
-    const finalMessage = `Hola, estoy interesado en los siguientes productos:\n\n${message}\n${totalEmoji} **Total a Pagar**: ${total.toLocaleString("es-CO")} COP\n\n${thankYouEmoji} ¡Gracias por tu atención! Espero tu respuesta.`;
+    const finalMessage = `Hola, estoy interesado en los siguientes productos:\n\n${message}\n${totalEmoji} **Total a Pagar**: ${total.toLocaleString(
+      "es-CO"
+    )} COP\n\n${thankYouEmoji} ¡Gracias por tu atención! Espero tu respuesta.`;
 
     const encodedMessage = encodeURIComponent(finalMessage);
     const phone = "573112928194";
@@ -78,93 +88,96 @@ function CartModal({ isOpen, onClose }) {
   };
 
   return (
-<div
-  className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center w-full h-full"
-  onClick={handleOverlayClick}
->
-  <div
-    className="modal-content bg-white rounded-lg shadow-2xl w-full h-full p-4 sm:max-w-lg sm:h-auto sm:rounded-lg" 
-    data-aos="fade-in"
-    data-aos-duration="300"
-    style={{ boxShadow: "1px 1px 20px black" }}
-  >
-    <button
-      className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl font-bold focus:outline-none"
-      onClick={onClose}
+    <div
+      className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center w-full h-full"
+      onClick={handleOverlayClick}
     >
-      &times;
-    </button>
-    <h2 className="text-xl sm:text-2xl font-bold text-black text-center mb-4">
-      Carrito de Compras
-    </h2>
+      <div
+        className="modal-content bg-white rounded-lg shadow-2xl w-full h-full p-4 sm:max-w-lg sm:h-auto sm:rounded-lg"
+        data-aos="fade-in"
+        data-aos-duration="300"
+        style={{ boxShadow: "1px 1px 20px black" }}
+      >
+        <button
+          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl font-bold focus:outline-none"
+          onClick={onClose}
+        >
+          &times;
+        </button>
+        <h2 className="text-xl sm:text-2xl font-bold text-black text-center mb-4">
+          Carrito de Compras
+        </h2>
 
-    {cart && cart.products.length > 0 ? (
-      <>
-        <ul className="space-y-4 overflow-y-auto max-h-60">
-          {cart.products.map((product) => (
-            <li
-              key={product._id}
-              className="flex flex-col sm:flex-row items-center justify-between bg-gray-100 p-4 rounded-lg shadow-sm mb-2"
-            >
-              <div className="flex items-center space-x-2 sm:space-x-4">
-                <img
-                  src={`http://localhost:5000${product.image}`}
-                  alt={product.name}
-                  className="w-16 h-16 object-cover rounded-lg"
-                />
-                <div>
-                  <p className="product-name text-sm sm:text-base font-semibold text-truncate">
-                    {product.name}
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    {product.quantity} x {product.price.toLocaleString("es-CO")} COP
-                  </p>
-                </div>
-              </div>
-              <span className="text-sm sm:text-base font-bold mt-2 sm:mt-0">
-                {(product.price * product.quantity).toLocaleString("es-CO")} COP
-              </span>
+        {cart && cart.products.length > 0 ? (
+          <>
+            <ul className="space-y-4 overflow-y-auto max-h-60">
+              {cart.products.map((product) => (
+                <li
+                  key={product._id}
+                  className="flex flex-col sm:flex-row items-center justify-between bg-gray-100 p-4 rounded-lg shadow-sm mb-2"
+                >
+                  <div className="flex items-center space-x-2 sm:space-x-4">
+                    <img
+                      src={`http://localhost:5000${product.image}`}
+                      alt={product.name}
+                      className="w-16 h-16 object-cover rounded-lg"
+                    />
+                    <div>
+                      <p className="product-name text-sm sm:text-base font-semibold text-truncate">
+                        {product.name}
+                      </p>
+                      <p className="text-gray-500 text-sm">
+                        {product.quantity} x{" "}
+                        {product.price.toLocaleString("es-CO")} COP
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-sm sm:text-base font-bold mt-2 sm:mt-0">
+                    {(product.price * product.quantity).toLocaleString("es-CO")}{" "}
+                    COP
+                  </span>
+                  <button
+                    className="text-red-500 ml-2 text-sm"
+                    onClick={() => removeProduct(product._id)}
+                  >
+                    Eliminar
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-4">
+              <p className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
+                Total:{" "}
+                {cart.products
+                  .reduce(
+                    (acc, product) => acc + product.price * product.quantity,
+                    0
+                  )
+                  .toLocaleString("es-CO")}{" "}
+                COP
+              </p>
               <button
-                className="text-red-500 ml-2 text-sm"
-                onClick={() => removeProduct(product._id)}
+                className="w-full mt-4 bg-[#f7002f] hover:bg-[#f04968] text-white text-lg font-semibold py-3 rounded-lg shadow-md transition-all"
+                onClick={handleProceedToPayment}
               >
-                Eliminar
+                Proceder al pago
               </button>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-4">
-          <p className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
-            Total:{" "}
-            {cart.products
-              .reduce((acc, product) => acc + product.price * product.quantity, 0)
-              .toLocaleString("es-CO")}{" "}
-            COP
+              <button
+                className="w-full mt-2 bg-black hover:bg-[#494848] text-white text-lg font-semibold py-3 rounded-lg shadow-md transition-all"
+                onClick={clearCart}
+              >
+                Limpiar Carrito
+              </button>
+            </div>
+          </>
+        ) : (
+          <p className="mt-4 text-gray-500 text-center">
+            Tu carrito está vacío.
           </p>
-          <button
-            className="w-full mt-4 bg-[#f7002f] hover:bg-[#f04968] text-white text-lg font-semibold py-3 rounded-lg shadow-md transition-all"
-            onClick={handleProceedToPayment}
-          >
-            Proceder al pago
-          </button>
-          <button
-            className="w-full mt-2 bg-black hover:bg-[#494848] text-white text-lg font-semibold py-3 rounded-lg shadow-md transition-all"
-            onClick={clearCart}
-          >
-            Limpiar Carrito
-          </button>
-        </div>
-      </>
-    ) : (
-      <p className="mt-4 text-gray-500 text-center">
-        Tu carrito está vacío.
-      </p>
-    )}
-  </div>
-</div>
-
-
+        )}
+      </div>
+    </div>
   );
 }
 

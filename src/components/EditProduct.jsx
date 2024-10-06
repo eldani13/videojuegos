@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import ps4 from "../assets/ps4.svg";
+import ps5 from "../assets/ps5.svg";
 
 function EditProduct({ product, onSave, onCancel }) {
   const [name, setName] = useState(product.name);
@@ -6,9 +8,10 @@ function EditProduct({ product, onSave, onCancel }) {
   const [oldPrice, setOldPrice] = useState(product.oldPrice);
   const [discount, setDiscount] = useState(product.discount);
   const [description, setDescription] = useState(product.description);
-  const [image, setImage] = useState(product.image); 
+  const [image, setImage] = useState(product.image);
   const [category, setCategory] = useState(product.category);
-  const [newImage, setNewImage] = useState(null); 
+  const [type, setType] = useState(product.type);
+  const [newImage, setNewImage] = useState(null);
 
   useEffect(() => {
     setName(product.name);
@@ -16,18 +19,20 @@ function EditProduct({ product, onSave, onCancel }) {
     setOldPrice(product.oldPrice);
     setDiscount(product.discount);
     setDescription(product.description);
-    setImage(product.image); 
+    setImage(product.image);
     setCategory(product.category);
+    setType(product.type);
   }, [product]);
 
   const handleSave = async () => {
-    let updatedProduct = { 
-      name, 
-      description, 
-      price, 
-      oldPrice, 
-      discount, 
-      category 
+    let updatedProduct = {
+      name,
+      description,
+      price,
+      oldPrice,
+      discount,
+      category,
+      type,
     };
 
     if (newImage) {
@@ -36,13 +41,16 @@ function EditProduct({ product, onSave, onCancel }) {
       formData.append("data", JSON.stringify(updatedProduct));
 
       try {
-        const res = await fetch(`http://localhost:5000/api/products/${product._id}`, {
-          method: "PUT",
-          body: formData, 
-        });
+        const res = await fetch(
+          `http://localhost:5000/api/products/${product._id}`,
+          {
+            method: "PUT",
+            body: formData,
+          }
+        );
 
         if (res.ok) {
-          onSave(); 
+          onSave();
         } else {
           const errorData = await res.json();
           console.error("Error al guardar el producto:", errorData);
@@ -55,16 +63,19 @@ function EditProduct({ product, onSave, onCancel }) {
     } else {
       updatedProduct.image = image;
       try {
-        const res = await fetch(`http://localhost:5000/api/products/${product._id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedProduct),
-        });
+        const res = await fetch(
+          `http://localhost:5000/api/products/${product._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedProduct),
+          }
+        );
 
         if (res.ok) {
-          onSave(); 
+          onSave();
         } else {
           const errorData = await res.json();
           console.error("Error al guardar el producto:", errorData);
@@ -78,7 +89,7 @@ function EditProduct({ product, onSave, onCancel }) {
   };
 
   const handleImageChange = (e) => {
-    setNewImage(e.target.files[0]); 
+    setNewImage(e.target.files[0]);
   };
 
   return (
@@ -146,9 +157,39 @@ function EditProduct({ product, onSave, onCancel }) {
             <option value="Simulación">Simulación</option>
           </select>
         </div>
+
+        <div>
+          <label className="block font-semibold mb-2 uppercase" htmlFor="type">
+            Consola:
+          </label>
+          <select
+            id="type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200"
+          >
+            <option value="PS4">PS4</option>
+            <option value="PS5">PS5</option>
+          </select>
+        </div>
+
+        <div className="absolute bottom-2 left-2">
+          {product.type === "PS4" && (
+            <img src={ps4} alt="PS4" className="h-12 w-12" />
+          )}
+          {product.type === "PS5" && (
+            <img src={ps5} alt="PS5" className="h-12 w-12" />
+          )}
+        </div>
         <div>
           <label>Imagen Actual</label>
-          {image && <img src={`http://localhost:5000${image}`} alt="Producto" className="mb-2 w-24 h-24 object-cover" />}
+          {image && (
+            <img
+              src={`http://localhost:5000${image}`}
+              alt="Producto"
+              className="mb-2 w-24 h-24 object-cover"
+            />
+          )}
         </div>
         <div>
           <label>Cargar Nueva Imagen</label>
@@ -159,10 +200,16 @@ function EditProduct({ product, onSave, onCancel }) {
           />
         </div>
         <div className="flex space-x-2">
-          <button className="bg-blue-500 text-white py-2 px-4 rounded flex-1" onClick={handleSave}>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded flex-1"
+            onClick={handleSave}
+          >
             Guardar Cambios
           </button>
-          <button className="bg-gray-300 text-black py-2 px-4 rounded flex-1" onClick={onCancel}>
+          <button
+            className="bg-gray-300 text-black py-2 px-4 rounded flex-1"
+            onClick={onCancel}
+          >
             Cancelar
           </button>
         </div>

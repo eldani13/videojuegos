@@ -3,20 +3,24 @@ import { useParams } from "react-router-dom";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import { BsCart, BsShare, BsWhatsapp } from "react-icons/bs";
-import Loading from "../components/Loading"; 
+import Loading from "../components/Loading";
+import ps4 from "../assets/ps4.svg";
+import ps5 from "../assets/ps5.svg";
 
 function Preview() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      setLoading(true); 
+      setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${productId}`);
+        const response = await fetch(
+          `http://localhost:5000/api/products/${productId}`
+        );
         if (!response.ok) {
           throw new Error("Producto no encontrado");
         }
@@ -25,7 +29,7 @@ function Preview() {
       } catch (error) {
         console.log("Error al obtener el producto:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -35,20 +39,20 @@ function Preview() {
   const handleWhatsAppClick = () => {
     if (product) {
       const message =
-        `🌟 *Hola,*\n\n` +
+        `🌟 *Hola,*\n` +
         `Estoy interesado en el producto *"${product.name}"*.\n` +
         `💰 *Precio:* ${product.price.toLocaleString("es-CO")} COP\n\n` +
         `✨ *Características:* \n` +
-        `${product.features
-          .map((feature, index) => `- ${feature}`)
-          .join("\n")}\n\n` +
+        `${product.features.map((feature) => `- ${feature}`).join("\n")}\n\n` +
         `📦 *Categoría:* ${product.category}\n` +
         `🤝 Espero tu respuesta. ¡Gracias!`;
 
-      const phoneNumber = "+573112928194";
-      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-        message
-      )}`;
+      const phoneNumber = "+573011940150";
+
+      const encodedMessage = encodeURIComponent(message);
+
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
       window.open(whatsappUrl, "_blank");
     }
   };
@@ -56,7 +60,9 @@ function Preview() {
   const handleShareClick = () => {
     const shareData = {
       title: product.name,
-      text: `¡Mira este producto! ${product.name} - Precio: ${product.price.toLocaleString("es-CO")} COP`,
+      text: `¡Mira este producto! ${
+        product.name
+      } - Precio: ${product.price.toLocaleString("es-CO")} COP`,
       url: `http://localhost:3000/products/${productId}`,
     };
 
@@ -78,19 +84,19 @@ function Preview() {
   const handleAddToCart = async () => {
     setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); 
-  
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const currentCart = getCartFromCookies();
       const existingProductIndex = currentCart.products.findIndex(
         (item) => item._id === product._id
       );
-  
+
       if (existingProductIndex > -1) {
         currentCart.products[existingProductIndex].quantity += 1;
       } else {
         currentCart.products.push({ ...product, quantity: 1 });
       }
-  
+
       setCookie("shopping_cart", JSON.stringify(currentCart));
       setMessage("Juego añadido al carrito");
       setModalOpen(true);
@@ -100,15 +106,16 @@ function Preview() {
       setLoading(false);
     }
   };
-  
 
   if (loading) {
-    return <Loading message="Cargando producto..." />; 
+    return <Loading message="Cargando producto..." />;
   }
 
   if (!product) {
     return (
-      <p className="text-center text-xl text-gray-600">Producto no encontrado.</p>
+      <p className="text-center text-xl text-gray-600">
+        Producto no encontrado.
+      </p>
     );
   }
 
@@ -162,6 +169,18 @@ function Preview() {
               <span className="inline-block px-4 py-2 bg-gray-200 rounded-full text-gray-700 font-medium">
                 {product.category}
               </span>
+            </div>
+
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-900">Consola:</h3>
+              <div className="flex items-center">
+                {product.type === "PS4" && (
+                  <img src={ps4} alt="PS4" className="w-16 h-16" />
+                )}
+                {product.type === "PS5" && (
+                  <img src={ps5} alt="PS5" className="w-16 h-16" />
+                )}
+              </div>
             </div>
 
             <div className="mb-6">

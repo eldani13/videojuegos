@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import Logo from "../img/logo.png";
 import EditProduct from "./EditProduct";
+import Features from "./Features";
 
 function Dashboard() {
   const [name, setName] = useState("");
@@ -19,7 +20,84 @@ function Dashboard() {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [features, setFeatures] = useState([""]);
+  const [type, setType] = useState("");
+  const [featuredProducts, setFeaturedProducts] = useState([]);
   const navigate = useNavigate();
+
+  const handleToggleFeatured = async (productId, currentFeaturedState) => {
+    try {
+      const newFeaturedState = !currentFeaturedState;
+
+      const res = await fetch(
+        `http://localhost:5000/api/products/${productId}/highlight`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ isFeatured: newFeaturedState }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("Producto actualizado exitosamente!");
+
+        fetchProducts();
+
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product._id === productId
+              ? { ...product, isFeatured: newFeaturedState }
+              : product
+          )
+        );
+
+        if (newFeaturedState) {
+          setFeaturedProducts((prevFeaturedProducts) => [
+            ...prevFeaturedProducts,
+            { ...data, isFeatured: newFeaturedState },
+          ]);
+        } else {
+          setFeaturedProducts((prevFeaturedProducts) =>
+            prevFeaturedProducts.filter((product) => product._id !== productId)
+          );
+        }
+      } else {
+        setMessage(data.message || "Error al actualizar el producto.");
+      }
+    } catch (error) {
+      setMessage("Error en la conexión: " + error.message);
+    }
+  };
+
+  const handleHighlight = async (productId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/products/${productId}/highlight`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ isFeatured: true }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al destacar el producto");
+      }
+
+      const updatedProduct = await response.json();
+      console.log("Producto actualizado:", updatedProduct);
+
+      setFeaturedProducts((prev) => [...prev, updatedProduct]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -32,6 +110,8 @@ function Dashboard() {
       const data = await res.json();
       if (res.ok) {
         setProducts(data);
+        const featured = data.filter((product) => product.isFeatured);
+        setFeaturedProducts(featured);
       } else {
         setMessage("Error al cargar los productos: " + data.message);
       }
@@ -64,6 +144,7 @@ function Dashboard() {
     formData.append("discount", discount);
     formData.append("category", category);
     formData.append("image", image);
+    formData.append("type", type);
 
     features.forEach((feature) => {
       formData.append("features[]", feature);
@@ -87,6 +168,7 @@ function Dashboard() {
         setImage(null);
         setCategory("Todos");
         setFeatures([""]);
+        setType("");
         fetchProducts();
       } else {
         setMessage(data.message || "Error al subir el producto.");
@@ -102,12 +184,12 @@ function Dashboard() {
   const [productIdToDelete, setProductIdToDelete] = useState(null);
 
   const handleDelete = (productId) => {
-    setProductIdToDelete(productId); 
-    setShowModal(true); 
+    setProductIdToDelete(productId);
+    setShowModal(true);
   };
 
   const confirmDelete = async () => {
-    if (!productIdToDelete) return; 
+    if (!productIdToDelete) return;
 
     try {
       const res = await fetch(
@@ -127,7 +209,7 @@ function Dashboard() {
     } catch (error) {
       setMessage("Error en la conexión: " + error.message);
     } finally {
-      setShowModal(false); 
+      setShowModal(false);
     }
   };
 
@@ -177,7 +259,9 @@ function Dashboard() {
 
       <div className="container mx-auto mt-10 p-6 grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-bold mb-4">Agregar Producto</h2>
+          <h1 className="text-center pb-10 text-3xl transform transition duration-500">
+            Agregar producto
+          </h1>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
@@ -198,7 +282,10 @@ function Dashboard() {
             </div>
 
             <div>
-              <label className="block font-semibold mb-2 uppercase" htmlFor="description">
+              <label
+                className="block font-semibold mb-2 uppercase"
+                htmlFor="description"
+              >
                 Descripción:
               </label>
               <input
@@ -213,7 +300,10 @@ function Dashboard() {
             </div>
 
             <div>
-              <label className="block font-semibold mb-2 uppercase" htmlFor="price">
+              <label
+                className="block font-semibold mb-2 uppercase"
+                htmlFor="price"
+              >
                 Precio:
               </label>
               <input
@@ -229,7 +319,10 @@ function Dashboard() {
             </div>
 
             <div>
-              <label className="block font-semibold mb-2 uppercase" htmlFor="old-price">
+              <label
+                className="block font-semibold mb-2 uppercase"
+                htmlFor="old-price"
+              >
                 Viejo Precio:
               </label>
               <input
@@ -243,7 +336,10 @@ function Dashboard() {
             </div>
 
             <div>
-              <label className="block font-semibold mb-2 uppercase" htmlFor="discount">
+              <label
+                className="block font-semibold mb-2 uppercase"
+                htmlFor="discount"
+              >
                 Descuento (%):
               </label>
               <input
@@ -257,7 +353,10 @@ function Dashboard() {
             </div>
 
             <div>
-              <label className="block font-semibold mb-2 uppercase" htmlFor="category">
+              <label
+                className="block font-semibold mb-2 uppercase"
+                htmlFor="category"
+              >
                 Categoría:
               </label>
               <select
@@ -309,7 +408,27 @@ function Dashboard() {
             </div>
 
             <div>
-              <label className="block font-semibold mb-2 uppercase">Imagen:</label>
+              <label
+                className="block font-semibold mb-2 uppercase"
+                htmlFor="type"
+              >
+                Consola:
+              </label>
+              <select
+                id="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring focus:ring-red-300 transition duration-200"
+              >
+                <option value="PS4">PS4</option>
+                <option value="PS5">PS5</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block font-semibold mb-2 uppercase">
+                Imagen:
+              </label>
               <input
                 type="file"
                 onChange={(e) => setImage(e.target.files[0])}
@@ -329,7 +448,9 @@ function Dashboard() {
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-bold mb-4">Productos Actuales</h2>
+          <h1 className="text-center pb-10 text-3xl transform transition duration-500">
+            Productos actuales
+          </h1>
           {fetchLoading ? (
             <Loading />
           ) : products.length > 0 ? (
@@ -368,19 +489,31 @@ function Dashboard() {
                   {localStorage.getItem("token") && (
                     <div className="flex gap-2 mt-4">
                       <button
-                        className="bg-black text-white py-2 px-4 rounded w-full"
+                        className="bg-black text-white py-2 px-4 rounded w-full transition duration-300 hover:bg-gray-800"
                         onClick={() => handleEdit(product)}
                       >
                         Editar
                       </button>
                       <button
-                        className="bg-red-500 text-white py-2 px-4 rounded w-full"
+                        className="bg-red-500 text-white py-2 px-4 rounded w-full transition duration-300 hover:bg-red-600"
                         onClick={() => {
                           setProductIdToDelete(product._id);
                           setShowModal(true);
                         }}
                       >
                         Eliminar
+                      </button>
+                      <button
+                        className={`py-2 px-4 rounded w-full transition duration-300 ${
+                          product.isFeatured
+                            ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                            : "bg-blue-500 text-white hover:bg-blue-600"
+                        }`}
+                        onClick={() =>
+                          handleToggleFeatured(product._id, product.isFeatured)
+                        }
+                      >
+                        {product.isFeatured ? "Quitar" : "Destacar"}
                       </button>
                     </div>
                   )}
@@ -391,6 +524,10 @@ function Dashboard() {
             <p className="text-center">No hay productos disponibles.</p>
           )}
         </div>
+
+        {featuredProducts.length > 0 && (
+          <Features products={featuredProducts} />
+        )}
       </div>
 
       {showModal && (

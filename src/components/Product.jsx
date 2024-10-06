@@ -3,6 +3,8 @@ import { setCookie, getCookie } from "../utils/cookieUtils";
 // import Preview from "../pages/Preview";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
+import ps4 from "../assets/ps4.svg";
+import ps5 from "../assets/ps5.svg";
 
 function Product({ product, onDelete, onAddToCart, isDashboard }) {
   const [loading, setLoading] = useState(false);
@@ -34,38 +36,57 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
 
   return (
     <div className="relative flex flex-col justify-between items-center rounded-lg bg-white shadow-lg transition-transform transform hover:scale-105 duration-300 w-80 mx-auto mb-10 h-[500px]">
-      {product.discount && (
+      <div className="relative w-full">
+        {product.discount && (
+          <div className="absolute top-0 left-0 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-tr-lg rounded-bl-lg z-10">
+            {product.discount}% OFF
+          </div>
+        )}
+      </div>
+      {/* {product.discount && (
         <div className="absolute top-0 left-0 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-tr-lg rounded-bl-lg">
           {product.discount}% OFF
         </div>
-      )}
-      <img
-        src={`http://localhost:5000${product.image}`}
-        alt={product.name}
-        className="h-64 w-full object-cover rounded-t-lg"
-      />
+      )} */}
+      <div className="relative w-full">
+        <img
+          src={`http://localhost:5000${product.image}`}
+          alt={product.name}
+          className="h-64 w-full object-cover rounded-t-lg"
+        />
+
+        <div className="absolute bottom-2 left-2">
+          {product.type === "PS4" && (
+            <img src={ps4} alt="PS4" className="h-12 w-12" />
+          )}
+          {product.type === "PS5" && (
+            <img src={ps5} alt="PS5" className="h-12 w-12" />
+          )}
+        </div>
+      </div>
       <div className="p-4 text-center flex-grow flex flex-col justify-between">
         <h5 className="text-lg font-semibold text-gray-900 uppercase line-clamp-1">
           {product.name}
         </h5>
         <p className="text-sm text-gray-600">{product.category}</p>
-        <div className="my-2">
-          {product.oldPrice && (
-            <p className="text-gray-500 text-sm line-through">
-              {product.oldPrice.toLocaleString("es-CO")} COP{" "}
-
+        <div className="my-2 flex flex-col">
+          <div className="flex flex-row justify-around items-center">
+            {product.oldPrice && (
+              <p className="text-gray-500 text-sm line-through">
+                {product.oldPrice.toLocaleString("es-CO")} COP{" "}
+              </p>
+            )}
+            <p className="text-xl font-bold text-[#f7002f]">
+              ${product.price.toLocaleString("es-CO")} COP{" "}
             </p>
-          )}
-          <p className="text-xl font-bold text-[#f7002f]">
-            ${product.price.toLocaleString("es-CO")} COP{" "}
-          </p>
+          </div>
           {product.discount && (
             <p className="text-sm text-red-600 font-semibold">
               Oferta disponible
             </p>
           )}
         </div>
-        <p className="text-xs text-gray-500 mt-2 line-clamp-3 flex-grow">
+        <p className="text-xs text-gray-500 mt-2 line-clamp-2 flex-grow overflow-hidden">
           {product.description}
         </p>
       </div>

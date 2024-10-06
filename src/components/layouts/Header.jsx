@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css"; 
+import "aos/dist/aos.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../img/logo.png";
 import CartModal from "../CartModal";
@@ -24,7 +24,7 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    AOS.init(); 
+    AOS.init();
     const fetchGames = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/products/");
@@ -87,8 +87,9 @@ function Header() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <a href="/"><img src={logo} alt="Logo" className="w-16"  /></a>
-            
+            <a href="/">
+              <img src={logo} alt="Logo" className="w-16" />
+            </a>
           </div>
 
           <div className="hidden md:flex md:w-1/3">
@@ -124,11 +125,17 @@ function Header() {
           </nav>
 
           <div className="hidden md:flex justify-around p-4 gap-6">
-            <a href="https://www.instagram.com/digital__games___?igsh=Z21hY2JsemZhZHA4&utm_source=qr" aria-label="Instagram">
+            <a
+              href="https://www.instagram.com/digital__games___?igsh=Z21hY2JsemZhZHA4&utm_source=qr"
+              aria-label="Instagram"
+            >
               <BsInstagram className="text-white hover:text-black w-7 h-7" />
             </a>
 
-            <a href="https://www.facebook.com/share/Vsro3jkyHZsnsRLx/?mibextid=LQQJ4d" aria-label="Facebook">
+            <a
+              href="https://www.facebook.com/share/Vsro3jkyHZsnsRLx/?mibextid=LQQJ4d"
+              aria-label="Facebook"
+            >
               <BsFacebook className="text-white hover:text-black w-7 h-7" />
             </a>
 
@@ -186,12 +193,32 @@ function Header() {
             </ul>
           </nav>
 
+          <div className="p-4">
+            <div className="relative w-full">
+              <BiSearch className="absolute top-2 left-3 text-gray-500 w-6 h-6" />
+              <input
+                type="search"
+                placeholder="Buscar..."
+                className="w-full h-10 pl-10 pr-4 rounded-full border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onKeyDown={handleKeyDown}
+              />
+            </div>
+          </div>
+
           <div className="flex justify-around mt-8">
-            <a href="https://www.instagram.com/digital__games___?igsh=Z21hY2JsemZhZHA4&utm_source=qr" aria-label="Instagram">
+            <a
+              href="https://www.instagram.com/digital__games___?igsh=Z21hY2JsemZhZHA4&utm_source=qr"
+              aria-label="Instagram"
+            >
               <BsInstagram className="text-gray-800 hover:text-gray-600 w-7 h-7" />
             </a>
 
-            <a href="https://www.facebook.com/share/Vsro3jkyHZsnsRLx/?mibextid=LQQJ4d" aria-label="Facebook">
+            <a
+              href="https://www.facebook.com/share/Vsro3jkyHZsnsRLx/?mibextid=LQQJ4d"
+              aria-label="Facebook"
+            >
               <BsFacebook className="text-gray-800 hover:text-gray-600 w-7 h-7" />
             </a>
 
