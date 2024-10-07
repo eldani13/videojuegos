@@ -22,6 +22,8 @@ function Header() {
   const [games, setGames] = useState([]);
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const isMobile = () => window.innerWidth < 768;
+
 
   useEffect(() => {
     AOS.init();
@@ -112,7 +114,7 @@ function Header() {
                 <li key={index}>
                   <Link
                     to={item.url}
-                    onClick={toggleMenu}
+                    onClick={() => isMobile() && toggleMenu()}
                     className={`block text-lg font-semibold ${
                       pathname === item.url ? "text-white" : "text-black"
                     } hover:text-white`}

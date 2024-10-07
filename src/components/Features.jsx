@@ -68,7 +68,7 @@ function Features({ products = [], isDashboard }) {
                   ${product.price.toLocaleString("es-CO")} COP
                 </p>
               </div>
-              <p className="text-xs text-gray-500 mt-2 line-clamp-3 flex-grow">
+              <p className="text-xs text-gray-500 mt-2 line-clamp-3 flex-grow text-justify">
                 {product.description}
               </p>
             </div>
