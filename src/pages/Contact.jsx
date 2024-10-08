@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "aos/dist/aos.css";
 import AOS from "aos";
 import Header from "../components/layouts/Header";
@@ -6,12 +6,56 @@ import Footer from "../components/layouts/Footer";
 import contact from "../img/contact.webp";
 import help from "../img/help.webp";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
+import axios from "axios"; 
+
+const PUBLIC_KEY = "F-mGqCco39_NJibSX";
+const PRIVATE_KEY = "Nc7yBQCPpkP6lrgSlSFa3";
+const TEMPLATE_ID = "template_p28qlxg";
+const SERVICE_ID = "service_21eetlp";
 
 function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
   useEffect(() => {
-    AOS.init({ duration: 1000 }); 
+    AOS.init({ duration: 1000 });
   }, []);
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { name, email, message } = formData;
+  
+    try {
+      const response = await axios.post("https://api.emailjs.com/api/v1.0/email/send", {
+        service_id: SERVICE_ID,
+        template_id: TEMPLATE_ID,
+        user_id: PUBLIC_KEY, 
+        template_params: {
+          name,
+          email,
+          message,
+        },
+      });
+      console.log("Email sent successfully:", response);
+      
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+      
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+  
   return (
     <div className="bg-gray-100">
       <Header />
@@ -22,7 +66,7 @@ function Contact() {
           backgroundImage: `url(${contact})`,
           backgroundSize: "cover",
         }}
-        data-aos="fade-in" 
+        data-aos="fade-in"
       >
         <div className="flex items-center justify-center h-full bg-black bg-opacity-50 px-4">
           <div className="text-center text-white space-y-4">
@@ -73,29 +117,41 @@ function Contact() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-6 md:p-8 shadow-lg rounded-lg">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label className="block text-gray-700 text-base md:text-lg font-semibold mb-2">Nombre</label>
                   <input
                     type="text"
+                    name="name"
                     placeholder="Tu nombre"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+                    onChange={handleChange}
+                    value={formData.name}
+                    required
                   />
                 </div>
                 <div>
                   <label className="block text-gray-700 text-base md:text-lg font-semibold mb-2">Email</label>
                   <input
                     type="email"
+                    name="email"
                     placeholder="Tu email"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+                    onChange={handleChange}
+                    value={formData.email}
+                    required
                   />
                 </div>
                 <div>
                   <label className="block text-gray-700 text-base md:text-lg font-semibold mb-2">Mensaje</label>
                   <textarea
+                    name="message"
                     placeholder="Escribe tu mensaje"
                     rows="5"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+                    onChange={handleChange}
+                    value={formData.message}
+                    required
                   ></textarea>
                 </div>
                 <button
@@ -138,12 +194,13 @@ function Contact() {
 
               <a
                 href="https://wa.me/573112928194"
-                className="relative mt-4 inline-flex items-center justify-center bg-green-500 text-white p-3 rounded-lg font-semibold hover:bg-green-600 transition duration-200"
+                className="relative mt-4 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-green-500 border border-transparent rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                data-aos="fade-up"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <FaWhatsapp className="mr-2" />
-                Chat en WhatsApp
+                Contactar por WhatsApp
               </a>
             </div>
           </div>
