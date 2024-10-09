@@ -22,7 +22,7 @@ function Home() {
   useEffect(() => {
     AOS.init(); 
     const fetchProducts = async () => {
-      const response = await fetch("http://localhost:5000/api/products");
+      const response = await fetch("https://videojuegos-7gih.onrender.com/api/products");
       if (!response.ok) {
         console.error("Error fetching products:", response.statusText);
         return;
@@ -44,7 +44,7 @@ function Home() {
   const handleDeleteProduct = async (productId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/products/${productId}`,
+        `https://videojuegos-7gih.onrender.com/api/products/${productId}`,
         {
           method: "DELETE",
         }

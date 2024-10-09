@@ -19,7 +19,7 @@ function Preview() {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/products/${productId}`
+          `https://videojuegos-7gih.onrender.com/api/products/${productId}`
         );
         if (!response.ok) {
           throw new Error("Producto no encontrado");
@@ -126,7 +126,7 @@ function Preview() {
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 mt-[9.7vh] justify-center">
           <div className="lg:w-96 w-72">
             <img
-              src={`http://localhost:5000${product.image}`}
+              src={`https://videojuegos-7gih.onrender.com${product.image}`}
               alt={product.name}
               className="w-full h-auto object-cover rounded-lg shadow-xl transition-transform duration-300 hover:scale-105"
             />

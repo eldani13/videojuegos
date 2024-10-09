@@ -60,5 +60,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en https://videojuegos-4rsc.onrender.com`);
+  console.log(`Servidor corriendo en https://videojuegos-7gih.onrender.com`);
 });
