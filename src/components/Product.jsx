@@ -51,7 +51,7 @@ function Product({ product, onDelete, onAddToCart, isDashboard }) {
       */}
       <div className="relative w-full h-[350px]">
         <img
-          src={`http://localhost:5000${product.image}`}
+          src={`https://videojuegos-7gih.onrender.com${product.image}`}
           alt={product.name}
           className="h-full w-full object-cover rounded-lg"
         />

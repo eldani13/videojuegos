@@ -20,7 +20,7 @@ function SearchResults() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/products/");
+        const response = await fetch("https://videojuegos-7gih.onrender.com/api/products/");
         const data = await response.json();
         setGames(data);
       } catch (error) {

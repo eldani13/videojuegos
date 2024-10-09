@@ -42,7 +42,7 @@ function EditProduct({ product, onSave, onCancel }) {
 
       try {
         const res = await fetch(
-          `http://localhost:5000/api/products/${product._id}`,
+          `https://videojuegos-7gih.onrender.com/api/products/${product._id}`,
           {
             method: "PUT",
             body: formData,
@@ -64,7 +64,7 @@ function EditProduct({ product, onSave, onCancel }) {
       updatedProduct.image = image;
       try {
         const res = await fetch(
-          `http://localhost:5000/api/products/${product._id}`,
+          `https://videojuegos-7gih.onrender.com/api/products/${product._id}`,
           {
             method: "PUT",
             headers: {
@@ -185,7 +185,7 @@ function EditProduct({ product, onSave, onCancel }) {
           <label>Imagen Actual</label>
           {image && (
             <img
-              src={`http://localhost:5000${image}`}
+              src={`https://videojuegos-7gih.onrender.com${image}`}
               alt="Producto"
               className="mb-2 w-24 h-24 object-cover"
             />
