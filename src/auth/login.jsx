@@ -16,7 +16,7 @@ function Login() {
     e.preventDefault();
     setIsLoading(true);
 
-    const res = await fetch("https://backend-videojuegos.onrender.com//api/auth/login", {
+    const res = await fetch("https://backend-videojuegos.onrender.com/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

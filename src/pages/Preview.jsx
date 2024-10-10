@@ -19,7 +19,7 @@ function Preview() {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://backend-videojuegos.onrender.com//api/products/${productId}`
+          `https://backend-videojuegos.onrender.com/api/products/${productId}`
         );
         if (!response.ok) {
           throw new Error("Producto no encontrado");
@@ -63,7 +63,7 @@ function Preview() {
       text: `¡Mira este producto! ${
         product.name
       } - Precio: ${product.price.toLocaleString("es-CO")} COP`,
-      url: `https://backend-videojuegos.onrender.com//products/${productId}`,
+      url: `https://backend-videojuegos.onrender.com/products/${productId}`,
     };
 
     if (navigator.share) {

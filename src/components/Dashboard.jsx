@@ -29,7 +29,7 @@ function Dashboard() {
       const newFeaturedState = !currentFeaturedState;
 
       const res = await fetch(
-        `https://backend-videojuegos.onrender.com//api/products/${productId}/highlight`,
+        `https://backend-videojuegos.onrender.com/api/products/${productId}/highlight`,
         {
           method: "PATCH",
           headers: {
@@ -75,7 +75,7 @@ function Dashboard() {
   const handleHighlight = async (productId) => {
     try {
       const response = await fetch(
-        `https://backend-videojuegos.onrender.com//api/products/${productId}/highlight`,
+        `https://backend-videojuegos.onrender.com/api/products/${productId}/highlight`,
         {
           method: "PATCH",
           headers: {
@@ -106,7 +106,7 @@ function Dashboard() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://backend-videojuegos.onrender.com//api/products");
+      const res = await fetch("https://backend-videojuegos.onrender.com/api/products");
       const data = await res.json();
       if (res.ok) {
         setProducts(data);
@@ -151,7 +151,7 @@ function Dashboard() {
     });
 
     try {
-      const res = await fetch("https://backend-videojuegos.onrender.com//api/products", {
+      const res = await fetch("https://backend-videojuegos.onrender.com/api/products", {
         method: "POST",
         body: formData,
       });
@@ -193,7 +193,7 @@ function Dashboard() {
 
     try {
       const res = await fetch(
-        `https://backend-videojuegos.onrender.com//api/products/${productIdToDelete}`,
+        `https://backend-videojuegos.onrender.com/api/products/${productIdToDelete}`,
         {
           method: "DELETE",
         }
