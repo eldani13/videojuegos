@@ -14,7 +14,7 @@ function Games() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://backend-videojuegos.onrender.com//api/products");
+        const res = await fetch("https://backend-videojuegos.onrender.com/api/products");
         const data = await res.json();
         setProducts(data);
       } catch (error) {

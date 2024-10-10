@@ -42,7 +42,7 @@ function EditProduct({ product, onSave, onCancel }) {
 
       try {
         const res = await fetch(
-          `https://backend-videojuegos.onrender.com//api/products/${product._id}`,
+          `https://backend-videojuegos.onrender.com/api/products/${product._id}`,
           {
             method: "PUT",
             body: formData,
@@ -64,7 +64,7 @@ function EditProduct({ product, onSave, onCancel }) {
       updatedProduct.image = image;
       try {
         const res = await fetch(
-          `https://backend-videojuegos.onrender.com//api/products/${product._id}`,
+          `https://backend-videojuegos.onrender.com/api/products/${product._id}`,
           {
             method: "PUT",
             headers: {

@@ -20,7 +20,7 @@ function SearchResults() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch("https://backend-videojuegos.onrender.com//api/products/");
+        const response = await fetch("https://backend-videojuegos.onrender.com/api/products/");
         const data = await response.json();
         setGames(data);
       } catch (error) {
