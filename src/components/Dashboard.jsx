@@ -29,7 +29,7 @@ function Dashboard() {
       const newFeaturedState = !currentFeaturedState;
 
       const res = await fetch(
-        `https://videojuegos-7gih.onrender.com/api/products/${productId}/highlight`,
+        `https://backend-videojuegos.onrender.com//api/products/${productId}/highlight`,
         {
           method: "PATCH",
           headers: {
@@ -75,7 +75,7 @@ function Dashboard() {
   const handleHighlight = async (productId) => {
     try {
       const response = await fetch(
-        `https://videojuegos-7gih.onrender.com/api/products/${productId}/highlight`,
+        `https://backend-videojuegos.onrender.com//api/products/${productId}/highlight`,
         {
           method: "PATCH",
           headers: {
@@ -106,7 +106,7 @@ function Dashboard() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://videojuegos-7gih.onrender.com/api/products");
+      const res = await fetch("https://backend-videojuegos.onrender.com//api/products");
       const data = await res.json();
       if (res.ok) {
         setProducts(data);
@@ -151,7 +151,7 @@ function Dashboard() {
     });
 
     try {
-      const res = await fetch("https://videojuegos-7gih.onrender.com/api/products", {
+      const res = await fetch("https://backend-videojuegos.onrender.com//api/products", {
         method: "POST",
         body: formData,
       });
@@ -193,7 +193,7 @@ function Dashboard() {
 
     try {
       const res = await fetch(
-        `https://videojuegos-7gih.onrender.com/api/products/${productIdToDelete}`,
+        `https://backend-videojuegos.onrender.com//api/products/${productIdToDelete}`,
         {
           method: "DELETE",
         }
@@ -461,7 +461,7 @@ function Dashboard() {
           className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between"
         >
           <img
-            src={`https://videojuegos-7gih.onrender.com${product.image}`}
+            src={`https://backend-videojuegos.onrender.com/${product.image}`}
             alt={product.name}
             className="w-full h-64 object-cover rounded mb-4"
           />
