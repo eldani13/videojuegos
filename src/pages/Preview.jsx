@@ -63,7 +63,7 @@ function Preview() {
       text: `¡Mira este producto! ${
         product.name
       } - Precio: ${product.price.toLocaleString("es-CO")} COP`,
-      url: `http://localhost:3000/products/${productId}`,
+      url: `https://videojuegos-7gih.onrender.com/products/${productId}`,
     };
 
     if (navigator.share) {
