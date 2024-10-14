@@ -123,7 +123,7 @@ function CartModal({ isOpen, onClose }) {
                       className="w-16 h-16 object-cover rounded-lg"
                     />
                     <div>
-                      <p className="product-name text-sm sm:text-base font-semibold text-truncate">
+                      <p className="product-name text-sm sm:text-base font-semibold truncate max-w-xs">
                         {product.name}
                       </p>
                       <p className="text-gray-500 text-sm">
