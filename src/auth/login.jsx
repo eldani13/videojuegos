@@ -27,7 +27,8 @@ function Login() {
     const data = await res.json();
     setIsLoading(false);
 
-    if (res.ok) {
+    if (res.ok && data.token) {
+      console.log('Token recibido:', data.token);
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
     } else {
