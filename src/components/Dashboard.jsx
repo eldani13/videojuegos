@@ -106,7 +106,9 @@ function Dashboard() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://backend-videojuegos.onrender.com/api/products");
+      const res = await fetch(
+        "https://backend-videojuegos.onrender.com/api/products"
+      );
       const data = await res.json();
       if (res.ok) {
         setProducts(data);
@@ -146,15 +148,19 @@ function Dashboard() {
     formData.append("image", image);
     formData.append("type", type);
 
-    features.forEach((feature) => {
-      formData.append("features[]", feature);
+    features.forEach((feature, index) => {
+      formData.append(`features[${index}]`, feature);
     });
 
     try {
-      const res = await fetch("https://backend-videojuegos.onrender.com/api/products", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://backend-videojuegos.onrender.com/api/products",
+        // "http://localhost:5000/api/products",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await res.json();
 
@@ -448,82 +454,82 @@ function Dashboard() {
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-lg">
-  <h1 className="text-center pb-10 text-3xl transform transition duration-500">
-    Productos actuales
-  </h1>
-  {fetchLoading ? (
-    <Loading />
-  ) : products.length > 0 ? (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {products.map((product) => (
-        <div
-          key={product.id}
-          className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between"
-        >
-          <img
-            src={`https://backend-videojuegos.onrender.com/${product.image}`}
-            alt={product.name}
-            className="w-full h-64 object-cover rounded mb-4"
-          />
+          <h1 className="text-center pb-10 text-3xl transform transition duration-500">
+            Productos actuales
+          </h1>
+          {fetchLoading ? (
+            <Loading />
+          ) : products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between"
+                >
+                  <img
+                    src={`https://backend-videojuegos.onrender.com/${product.image}`}
+                    alt={product.name}
+                    className="w-full h-64 object-cover rounded mb-4"
+                  />
 
-          <div className="flex-grow">
-            <h3 className="text-lg font-bold mb-2 line-clamp-1">
-              {product.name}
-            </h3>
-            <p className="text-black mb-1 text-justify line-clamp-2">
-              {product.description}
-            </p>
-            <p className="text-black font-semibold">
-              Precio:
-              <span className="text-[#f7002f] ml-1">
-                ${product.price.toLocaleString("es-CO")} COP{" "}
-                {product.oldPrice && (
-                  <span className="text-sm text-gray-500 line-through ml-2">
-                    ${product.oldPrice}
-                  </span>
-                )}
-              </span>
-            </p>
-          </div>
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-bold mb-2 line-clamp-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-black mb-1 text-justify line-clamp-2">
+                      {product.description}
+                    </p>
+                    <p className="text-black font-semibold">
+                      Precio:
+                      <span className="text-[#f7002f] ml-1">
+                        ${product.price.toLocaleString("es-CO")} COP{" "}
+                        {product.oldPrice && (
+                          <span className="text-sm text-gray-500 line-through ml-2">
+                            ${product.oldPrice}
+                          </span>
+                        )}
+                      </span>
+                    </p>
+                  </div>
 
-          {localStorage.getItem("token") && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              <button
-                className="bg-black text-white py-1 sm:py-2 px-2 sm:px-4 rounded w-full sm:w-auto transition duration-300 hover:bg-gray-800"
-                onClick={() => handleEdit(product)}
-              >
-                Editar
-              </button>
-              <button
-                className="bg-red-500 text-white py-1 sm:py-2 px-2 sm:px-4 rounded w-full sm:w-auto transition duration-300 hover:bg-red-600"
-                onClick={() => {
-                  setProductIdToDelete(product._id);
-                  setShowModal(true);
-                }}
-              >
-                Eliminar
-              </button>
-              <button
-                className={`py-1 sm:py-2 px-2 sm:px-4 rounded w-full sm:w-auto transition duration-300 ${
-                  product.isFeatured
-                    ? "bg-yellow-500 text-white hover:bg-yellow-600"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-                onClick={() =>
-                  handleToggleFeatured(product._id, product.isFeatured)
-                }
-              >
-                {product.isFeatured ? "Quitar" : "Destacar"}
-              </button>
+                  {localStorage.getItem("token") && (
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      <button
+                        className="bg-black text-white py-1 sm:py-2 px-2 sm:px-4 rounded w-full sm:w-auto transition duration-300 hover:bg-gray-800"
+                        onClick={() => handleEdit(product)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="bg-red-500 text-white py-1 sm:py-2 px-2 sm:px-4 rounded w-full sm:w-auto transition duration-300 hover:bg-red-600"
+                        onClick={() => {
+                          setProductIdToDelete(product._id);
+                          setShowModal(true);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                      <button
+                        className={`py-1 sm:py-2 px-2 sm:px-4 rounded w-full sm:w-auto transition duration-300 ${
+                          product.isFeatured
+                            ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                            : "bg-blue-500 text-white hover:bg-blue-600"
+                        }`}
+                        onClick={() =>
+                          handleToggleFeatured(product._id, product.isFeatured)
+                        }
+                      >
+                        {product.isFeatured ? "Quitar" : "Destacar"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
+          ) : (
+            <p className="text-center">No hay productos disponibles.</p>
           )}
         </div>
-      ))}
-    </div>
-  ) : (
-    <p className="text-center">No hay productos disponibles.</p>
-  )}
-</div>
 
         {featuredProducts.length > 0 && (
           <Features products={featuredProducts} />
