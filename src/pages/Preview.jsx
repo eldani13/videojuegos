@@ -126,7 +126,7 @@ function Preview() {
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 mt-[9.7vh] justify-center">
           <div className="lg:w-96 w-72">
             <img
-              src={`https://backend-videojuegos.onrender.com/${product.image}`}
+              src={product.image}
               alt={product.name}
               className="w-full h-auto object-cover rounded-lg shadow-xl transition-transform duration-300 hover:scale-105"
             />

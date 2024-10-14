@@ -467,7 +467,7 @@ function Dashboard() {
                   className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between"
                 >
                   <img
-                    src={`https://backend-videojuegos.onrender.com/${product.image}`}
+                    src={product.image}
                     alt={product.name}
                     className="w-full h-64 object-cover rounded mb-4"
                   />
