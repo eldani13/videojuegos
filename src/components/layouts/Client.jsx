@@ -10,11 +10,11 @@ function Client() {
 
   return (
     <div className="py-10 px-5 bg-gray-100">
-      <h1 className="text-center pb-10 text-3xl transform transition duration-500">Caracteristicas de DigitalGames™</h1>
-      <div className="container mx-auto flex flex-col md:flex-row justify-center gap-8">
+      <h1 className="text-center pb-10 text-3xl transform transition duration-500">Características de DigitalGames™</h1>
+      <div className="container mx-auto flex flex-col md:flex-row justify-center items-center gap-8">
         
         <div
-          className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6 max-w-xs transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+          className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6 h-64 max-w-xs transform transition duration-500 hover:scale-105 hover:shadow-2xl"
           data-aos="fade-up"
         >
           <div className="border-b-4 border-green-500 w-16 mb-4"></div> 
@@ -26,7 +26,7 @@ function Client() {
         </div>
 
         <div
-          className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6 max-w-xs transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+          className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6 h-64 max-w-xs transform transition duration-500 hover:scale-105 hover:shadow-2xl"
           data-aos="fade-up"
         >
           <div className="border-b-4 border-red-500 w-16 mb-4"></div> 
@@ -38,7 +38,7 @@ function Client() {
         </div>
 
         <div
-          className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6 max-w-xs transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+          className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6 h-64 max-w-xs transform transition duration-500 hover:scale-105 hover:shadow-2xl"
           data-aos="fade-up"
         >
           <div className="border-b-4 border-blue-500 w-16 mb-4"></div> 
@@ -50,7 +50,7 @@ function Client() {
         </div>
 
         <div
-          className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6 max-w-xs transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+          className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6 h-64 max-w-xs transform transition duration-500 hover:scale-105 hover:shadow-2xl"
           data-aos="fade-up"
         >
           <div className="border-b-4 border-yellow-500 w-16 mb-4"></div> 
