@@ -34,7 +34,8 @@
 }
 
 .product-name {
-  width: auto;
+  max-width: 100%;
+  /* width: auto; */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
