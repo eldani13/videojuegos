@@ -47,19 +47,21 @@ function CartModal({ isOpen, onClose }) {
     const moneyEmoji = "💰";
     const totalEmoji = "💳";
     const thankYouEmoji = "🎉";
+    const url = `https://videojuegos-rose.vercel.app/preview/${productId}`;
 
     const message = cart.products
       .map(
         (product) =>
-          `${cartEmoji} *${product.name}*\n${quantityEmoji} **Cantidad**: ${
+          `${cartEmoji} *${product.name}*\n${quantityEmoji} *Cantidad*: ${
             product.quantity
-          }\n${moneyEmoji} **Precio Unitario**: ${product.price.toLocaleString(
+          }\n${moneyEmoji} *Precio Unitario*: ${product.price.toLocaleString(
             "es-CO"
-          )} COP\n${moneyEmoji} **Subtotal**: ${(
+          )} COP\n${moneyEmoji} *Subtotal*: ${(
             product.price * product.quantity
           ).toLocaleString(
             "es-CO"
-          )} COP\n📦 **Descripción**: Un producto de alta calidad que garantiza satisfacción.\n`
+          )} COP\n📦 *Descripción*: Un producto de alta calidad que garantiza satisfacción.\n
+          ${thankYouEmoji} Para más detalles, visita: ${url}\n\n`
       )
       .join("");
 
@@ -68,7 +70,7 @@ function CartModal({ isOpen, onClose }) {
       0
     );
 
-    const finalMessage = `Hola, estoy interesado en los siguientes productos:\n\n${message}\n${totalEmoji} **Total a Pagar**: ${total.toLocaleString(
+    const finalMessage = `Hola, estoy interesado en los siguientes productos:\n\n${message}\n${totalEmoji} *Total a Pagar*: ${total.toLocaleString(
       "es-CO"
     )} COP\n\n${thankYouEmoji} ¡Gracias por tu atención! Espero tu respuesta.`;
 
