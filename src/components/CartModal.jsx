@@ -73,7 +73,7 @@ function CartModal({ isOpen, onClose }) {
     )} COP\n\n${thankYouEmoji} ¡Gracias por tu atención! Espero tu respuesta.`;
 
     const encodedMessage = encodeURIComponent(finalMessage);
-    const phone = "573112928194";
+    const phone = "+573011940150";
     const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
 
     window.open(whatsappUrl, "_blank");

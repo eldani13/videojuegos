@@ -60,12 +60,10 @@ function Preview() {
   const handleShareClick = () => {
     const shareData = {
       title: product.name,
-      text: `¡Mira este producto! ${
-        product.name
-      } - Precio: ${product.price.toLocaleString("es-CO")} COP`,
-      url: `https://backend-videojuegos.onrender.com/products/${productId}`,
+      text: `¡Mira este increíble producto! 🌟 ${product.name}\nPrecio: ${product.price.toLocaleString("es-CO")} COP\n\n¡Haz clic aquí para verlo! 👇`,
+      url: `https://videojuegos-rose.vercel.app/preview/${productId}`, 
     };
-
+  
     if (navigator.share) {
       navigator
         .share(shareData)
@@ -80,6 +78,7 @@ function Preview() {
       window.open(fallbackUrl, "_blank");
     }
   };
+  
 
   const handleAddToCart = async () => {
     setLoading(true);
