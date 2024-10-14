@@ -118,7 +118,7 @@ function CartModal({ isOpen, onClose }) {
                 >
                   <div className="flex items-center space-x-2 sm:space-x-4">
                     <img
-                      src={`https://backend-videojuegos.onrender.com/${product.image}`}
+                      src={product.image}
                       alt={product.name}
                       className="w-16 h-16 object-cover rounded-lg"
                     />
