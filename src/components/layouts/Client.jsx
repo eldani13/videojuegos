@@ -19,8 +19,8 @@ function Client() {
         >
           <div className="border-b-4 border-green-500 w-16 mb-4"></div> 
           <FaWhatsapp className="text-5xl text-green-500 mb-4" />
-          <h3 className="text-xl font-bold mb-2">Atención personalizada al instante</h3>
-          <p className="text-gray-600">
+          <h3 className="text-xl font-bold mb-2">Atención personalizada</h3>
+          <p className="text-gray-600 text-xs">
             Recibe atención personalizada al instante. Estamos comprometidos en brindarte la mejor experiencia de atención al cliente.
           </p>
         </div>
@@ -32,7 +32,7 @@ function Client() {
           <div className="border-b-4 border-red-500 w-16 mb-4"></div> 
           <FaCheckCircle className="text-5xl text-red-500 mb-4" />
           <h3 className="text-xl font-bold mb-2">Garantía asegurada</h3>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-xs">
             Nuestro compromiso es tu satisfacción, por eso ofrecemos una garantía asegurada en todos nuestros juegos.
           </p>
         </div>
@@ -43,8 +43,8 @@ function Client() {
         >
           <div className="border-b-4 border-blue-500 w-16 mb-4"></div> 
           <FaUserShield className="text-5xl text-blue-500 mb-4" />
-          <h3 className="text-xl font-bold mb-2">Seguridad en todas tus compras</h3>
-          <p className="text-gray-600">
+          <h3 className="text-xl font-bold mb-2">Seguridad</h3>
+          <p className="text-gray-600 text-xs">
             Tus datos y transacciones están completamente seguros con nosotros, garantizando una experiencia sin preocupaciones.
           </p>
         </div>
@@ -56,7 +56,7 @@ function Client() {
           <div className="border-b-4 border-yellow-500 w-16 mb-4"></div> 
           <FaHeadset className="text-5xl text-yellow-500 mb-4" />
           <h3 className="text-xl font-bold mb-2">Soporte 24/7</h3>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-xs">
             Estamos disponibles las 24 horas, los 7 días de la semana, para ayudarte con cualquier duda o inconveniente que puedas tener.
           </p>
         </div>
